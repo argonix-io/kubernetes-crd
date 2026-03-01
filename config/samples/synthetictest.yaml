@@ -1,0 +1,15 @@
+apiVersion: argonix.io/v1alpha1
+kind: SyntheticTest
+metadata:
+  name: example-api-test
+spec:
+  name: "Login API Test"
+  testType: api
+  steps: '[{"method": "POST", "url": "https://api.example.com/login", "body": "{\"email\": \"test@example.com\"}", "assertions": [{"type": "status_code", "value": "200"}]}]'
+  checkInterval: 300
+  tags:
+    - api
+    - login
+  locations:
+    - eu-france
+    - us-east

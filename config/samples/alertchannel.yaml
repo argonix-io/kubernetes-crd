@@ -1,0 +1,17 @@
+apiVersion: argonix.io/v1alpha1
+kind: AlertChannel
+metadata:
+  name: example-slack-channel
+spec:
+  name: "Slack #alerts"
+  channelType: slack
+  config: '{"webhook_url": "https://hooks.slack.com/services/xxx/yyy/zzz"}'
+---
+apiVersion: argonix.io/v1alpha1
+kind: AlertChannel
+metadata:
+  name: example-email-channel
+spec:
+  name: "Team Email"
+  channelType: email
+  config: '{"emails": ["team@example.com"]}'

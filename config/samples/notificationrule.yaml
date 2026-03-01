@@ -1,0 +1,12 @@
+apiVersion: argonix.io/v1alpha1
+kind: NotificationRule
+metadata:
+  name: example-notification-rule
+spec:
+  name: "Alert on downtime"
+  triggerCondition: goes_down
+  consecutiveFailures: 2
+  cooldownMinutes: 10
+  allMonitors: true
+  channels:
+    - "REPLACE_WITH_ALERT_CHANNEL_UUID"

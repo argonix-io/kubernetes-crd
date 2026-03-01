@@ -1,0 +1,10 @@
+apiVersion: argonix.io/v1alpha1
+kind: Group
+metadata:
+  name: example-group
+spec:
+  name: "Production Services"
+  description: "All production service monitors"
+  tags:
+    env: production
+    team: platform

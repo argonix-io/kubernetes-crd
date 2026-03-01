@@ -1,0 +1,12 @@
+apiVersion: argonix.io/v1alpha1
+kind: StatusPage
+metadata:
+  name: example-status-page
+spec:
+  name: "Acme Status"
+  slug: "acme-status"
+  visibility: public
+  accentColor: "#3B82F6"
+  headerText: "Acme Service Status"
+  footerText: "© 2024 Acme Inc."
+  showHealthGraph: true

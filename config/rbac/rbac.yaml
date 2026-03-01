@@ -1,0 +1,98 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: argonix-controller-manager
+  namespace: argonix-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: argonix-controller-manager-role
+rules:
+  # Argonix CRD resources
+  - apiGroups:
+      - argonix.io
+    resources:
+      - monitors
+      - synthetictests
+      - groups
+      - notificationrules
+      - alertchannels
+      - statuspages
+      - testsuites
+      - manualtestcases
+      - testplans
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  # Status subresources
+  - apiGroups:
+      - argonix.io
+    resources:
+      - monitors/status
+      - synthetictests/status
+      - groups/status
+      - notificationrules/status
+      - alertchannels/status
+      - statuspages/status
+      - testsuites/status
+      - manualtestcases/status
+      - testplans/status
+    verbs:
+      - get
+      - patch
+      - update
+  # Finalizers
+  - apiGroups:
+      - argonix.io
+    resources:
+      - monitors/finalizers
+      - synthetictests/finalizers
+      - groups/finalizers
+      - notificationrules/finalizers
+      - alertchannels/finalizers
+      - statuspages/finalizers
+      - testsuites/finalizers
+      - manualtestcases/finalizers
+      - testplans/finalizers
+    verbs:
+      - update
+  # Events
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+      - patch
+  # Leader election
+  - apiGroups:
+      - coordination.k8s.io
+    resources:
+      - leases
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: argonix-controller-manager-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: argonix-controller-manager-role
+subjects:
+  - kind: ServiceAccount
+    name: argonix-controller-manager
+    namespace: argonix-system
