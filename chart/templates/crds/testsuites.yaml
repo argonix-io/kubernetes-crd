@@ -1,0 +1,92 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: testsuites.argonix.io
+  labels:
+    {{- include "argonix-crd.labels" . | nindent 4 }}
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.15.0
+spec:
+  group: argonix.io
+  names:
+    kind: TestSuite
+    listKind: TestSuiteList
+    plural: testsuites
+    singular: testsuite
+  scope: Namespaced
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      additionalPrinterColumns:
+        - name: Age
+          type: date
+          jsonPath: .metadata.creationTimestamp
+      subresources:
+        status: {}
+      schema:
+        openAPIV3Schema:
+          type: object
+          description: TestSuite is the Schema for the testsuites API.
+          properties:
+            apiVersion:
+              type: string
+            kind:
+              type: string
+            metadata:
+              type: object
+            spec:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                tags:
+                  type: array
+                  items:
+                    type: string
+                syntheticTests:
+                  type: array
+                  items:
+                    type: string
+                manualTestCases:
+                  type: array
+                  items:
+                    type: string
+            status:
+              type: object
+              properties:
+                id:
+                  type: string
+                dateCreated:
+                  type: string
+                dateModified:
+                  type: string
+                conditions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      lastTransitionTime:
+                        type: string
+                        format: date-time
+                      message:
+                        type: string
+                      observedGeneration:
+                        type: integer
+                        format: int64
+                      reason:
+                        type: string
+                      status:
+                        type: string
+                      type:
+                        type: string
+                    required:
+                      - lastTransitionTime
+                      - message
+                      - reason
+                      - status
+                      - type

@@ -1,0 +1,119 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: synthetictests.argonix.io
+  labels:
+    {{- include "argonix-crd.labels" . | nindent 4 }}
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.15.0
+spec:
+  group: argonix.io
+  names:
+    kind: SyntheticTest
+    listKind: SyntheticTestList
+    plural: synthetictests
+    singular: synthetictest
+  scope: Namespaced
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      additionalPrinterColumns:
+        - name: Type
+          type: string
+          jsonPath: .spec.testType
+        - name: Status
+          type: string
+          jsonPath: .status.currentStatus
+        - name: Active
+          type: boolean
+          jsonPath: .spec.isActive
+        - name: Age
+          type: date
+          jsonPath: .metadata.creationTimestamp
+      subresources:
+        status: {}
+      schema:
+        openAPIV3Schema:
+          type: object
+          description: SyntheticTest is the Schema for the synthetictests API.
+          properties:
+            apiVersion:
+              type: string
+            kind:
+              type: string
+            metadata:
+              type: object
+            spec:
+              type: object
+              description: SyntheticTestSpec defines the desired state of a SyntheticTest.
+              required:
+                - name
+                - testType
+                - steps
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                isActive:
+                  type: boolean
+                  default: true
+                testType:
+                  type: string
+                  enum: [api, browser]
+                steps:
+                  type: string
+                  description: JSON-encoded array of step objects.
+                checkInterval:
+                  type: integer
+                  format: int64
+                  default: 300
+                timeout:
+                  type: integer
+                  format: int64
+                  default: 30
+                tags:
+                  type: array
+                  items:
+                    type: string
+                locations:
+                  type: array
+                  items:
+                    type: string
+            status:
+              type: object
+              properties:
+                id:
+                  type: string
+                currentStatus:
+                  type: string
+                dateCreated:
+                  type: string
+                dateModified:
+                  type: string
+                conditions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      lastTransitionTime:
+                        type: string
+                        format: date-time
+                      message:
+                        type: string
+                      observedGeneration:
+                        type: integer
+                        format: int64
+                      reason:
+                        type: string
+                      status:
+                        type: string
+                      type:
+                        type: string
+                    required:
+                      - lastTransitionTime
+                      - message
+                      - reason
+                      - status
+                      - type

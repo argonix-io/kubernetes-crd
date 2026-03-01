@@ -1,0 +1,204 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: monitors.argonix.io
+  labels:
+    {{- include "argonix-crd.labels" . | nindent 4 }}
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.15.0
+spec:
+  group: argonix.io
+  names:
+    kind: Monitor
+    listKind: MonitorList
+    plural: monitors
+    singular: monitor
+  scope: Namespaced
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      additionalPrinterColumns:
+        - name: Type
+          type: string
+          jsonPath: .spec.monitorType
+        - name: Status
+          type: string
+          jsonPath: .status.currentStatus
+        - name: Active
+          type: boolean
+          jsonPath: .spec.isActive
+        - name: Age
+          type: date
+          jsonPath: .metadata.creationTimestamp
+      subresources:
+        status: {}
+      schema:
+        openAPIV3Schema:
+          type: object
+          description: Monitor is the Schema for the monitors API.
+          properties:
+            apiVersion:
+              type: string
+            kind:
+              type: string
+            metadata:
+              type: object
+            spec:
+              type: object
+              description: MonitorSpec defines the desired state of a Monitor.
+              required:
+                - name
+                - monitorType
+              properties:
+                name:
+                  type: string
+                  description: Display name of the monitor.
+                monitorType:
+                  type: string
+                  description: Type of monitor.
+                  enum: [http, ping, tcp, dns, ssl, keyword, grpc, heartbeat, multi_step_http]
+                isActive:
+                  type: boolean
+                  default: true
+                url:
+                  type: string
+                hostname:
+                  type: string
+                port:
+                  type: integer
+                  format: int64
+                dnsRecordType:
+                  type: string
+                  default: "A"
+                dnsExpected:
+                  type: string
+                httpMethod:
+                  type: string
+                  default: "GET"
+                httpHeaders:
+                  type: string
+                  default: "{}"
+                httpBody:
+                  type: string
+                httpBodyContentType:
+                  type: string
+                  default: "application/json"
+                followRedirects:
+                  type: boolean
+                  default: true
+                verifySSL:
+                  type: boolean
+                  default: true
+                httpAuthUser:
+                  type: string
+                httpAuthPass:
+                  type: string
+                keyword:
+                  type: string
+                keywordExists:
+                  type: boolean
+                  default: true
+                checkInterval:
+                  type: integer
+                  format: int64
+                  default: 300
+                timeout:
+                  type: integer
+                  format: int64
+                  default: 30
+                retries:
+                  type: integer
+                  format: int64
+                  default: 0
+                remediationEnabled:
+                  type: boolean
+                  default: false
+                remediationScript:
+                  type: string
+                remediationTimeout:
+                  type: integer
+                  format: int64
+                  default: 60
+                remediationWaitSeconds:
+                  type: integer
+                  format: int64
+                  default: 30
+                heartbeatGraceSeconds:
+                  type: integer
+                  format: int64
+                  default: 0
+                multiStepConfig:
+                  type: string
+                  default: "[]"
+                grpcService:
+                  type: string
+                grpcMethod:
+                  type: string
+                grpcProto:
+                  type: string
+                grpcMetadata:
+                  type: string
+                  default: "{}"
+                grpcTLS:
+                  type: boolean
+                  default: true
+                assertions:
+                  type: string
+                  default: "[]"
+                sslExpiryWarnDays:
+                  type: integer
+                  format: int64
+                  default: 30
+                location:
+                  type: string
+                  default: "eu-france"
+                regions:
+                  type: array
+                  items:
+                    type: string
+                tags:
+                  type: array
+                  items:
+                    type: string
+                groupId:
+                  type: string
+            status:
+              type: object
+              description: MonitorStatus defines the observed state of a Monitor.
+              properties:
+                id:
+                  type: string
+                currentStatus:
+                  type: string
+                heartbeatToken:
+                  type: string
+                dateCreated:
+                  type: string
+                dateModified:
+                  type: string
+                conditions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      lastTransitionTime:
+                        type: string
+                        format: date-time
+                      message:
+                        type: string
+                      observedGeneration:
+                        type: integer
+                        format: int64
+                      reason:
+                        type: string
+                      status:
+                        type: string
+                      type:
+                        type: string
+                    required:
+                      - lastTransitionTime
+                      - message
+                      - reason
+                      - status
+                      - type

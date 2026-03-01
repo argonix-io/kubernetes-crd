@@ -1,0 +1,83 @@
+# -- Number of controller replicas
+replicaCount: 1
+
+image:
+  # -- Container image repository
+  repository: ghcr.io/argonix-io/kubernetes-crd
+  # -- Image pull policy
+  pullPolicy: IfNotPresent
+  # -- Overrides the image tag (defaults to appVersion)
+  tag: ""
+
+# -- Image pull secrets
+imagePullSecrets: []
+
+# -- Override the release name
+nameOverride: ""
+# -- Override the full release name
+fullnameOverride: ""
+
+argonix:
+  # -- Argonix API base URL
+  apiUrl: "https://api.argonix.io"
+  # -- Argonix API key (required). Ignored if existingSecret is set.
+  apiKey: ""
+  # -- Use an existing secret for credentials (must contain 'api-key' key, optionally 'url')
+  existingSecret: ""
+
+serviceAccount:
+  # -- Create a service account
+  create: true
+  # -- Annotations for the service account
+  annotations: {}
+  # -- Override the service account name
+  name: ""
+
+# -- Additional pod annotations
+podAnnotations: {}
+
+# -- Pod security context
+podSecurityContext:
+  runAsNonRoot: true
+
+# -- Container security context
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+
+# -- Resource requests and limits
+resources:
+  limits:
+    cpu: 500m
+    memory: 128Mi
+  requests:
+    cpu: 10m
+    memory: 64Mi
+
+# -- Node selector
+nodeSelector: {}
+
+# -- Tolerations
+tolerations: []
+
+# -- Affinity rules
+affinity: {}
+
+leaderElection:
+  # -- Enable leader election (recommended for HA)
+  enabled: true
+
+metrics:
+  # -- Metrics bind address
+  bindAddress: ":8080"
+  # -- Create a Service for metrics scraping
+  service:
+    enabled: false
+    port: 8080
+    annotations: {}
+
+healthProbe:
+  # -- Health probe bind address
+  bindAddress: ":8081"
