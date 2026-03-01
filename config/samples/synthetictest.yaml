@@ -12,4 +12,3 @@ spec:
     - login
   locations:
     - eu-france
-    - us-east
