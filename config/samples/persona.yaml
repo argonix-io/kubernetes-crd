@@ -1,0 +1,20 @@
+apiVersion: argonix.io/v1alpha1
+kind: Persona
+metadata:
+  name: example-devops-persona
+spec:
+  name: "DevOps Agent"
+  description: "Handles infrastructure incidents and deployments"
+  template: devops
+  systemPrompt: "You are a senior DevOps engineer. Focus on infrastructure health."
+  connectorIds: '["connector-uuid-1", "connector-uuid-2"]'
+  allowedTools: '["restart_pod", "check_logs", "notify_slack"]'
+---
+apiVersion: argonix.io/v1alpha1
+kind: Persona
+metadata:
+  name: example-security-persona
+spec:
+  name: "Security Agent"
+  template: security
+  approvalRules: '{"require_approval_for": ["write", "delete"]}'

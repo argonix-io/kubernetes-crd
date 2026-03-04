@@ -895,3 +895,626 @@ func (in *TestPlanList) DeepCopyObject() runtime.Object {
 	}
 	return nil
 }
+
+// --- Connector ---
+
+func (in *ConnectorSpec) DeepCopyInto(out *ConnectorSpec) {
+	*out = *in
+}
+
+func (in *ConnectorSpec) DeepCopy() *ConnectorSpec {
+	if in == nil {
+		return nil
+	}
+	out := new(ConnectorSpec)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *ConnectorStatus) DeepCopyInto(out *ConnectorStatus) {
+	*out = *in
+	if in.Conditions != nil {
+		in, out := &in.Conditions, &out.Conditions
+		*out = make([]metav1.Condition, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+}
+
+func (in *ConnectorStatus) DeepCopy() *ConnectorStatus {
+	if in == nil {
+		return nil
+	}
+	out := new(ConnectorStatus)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *Connector) DeepCopyInto(out *Connector) {
+	*out = *in
+	out.TypeMeta = in.TypeMeta
+	in.ObjectMeta.DeepCopyInto(&out.ObjectMeta)
+	in.Spec.DeepCopyInto(&out.Spec)
+	in.Status.DeepCopyInto(&out.Status)
+}
+
+func (in *Connector) DeepCopy() *Connector {
+	if in == nil {
+		return nil
+	}
+	out := new(Connector)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *Connector) DeepCopyObject() runtime.Object {
+	if c := in.DeepCopy(); c != nil {
+		return c
+	}
+	return nil
+}
+
+func (in *ConnectorList) DeepCopyInto(out *ConnectorList) {
+	*out = *in
+	out.TypeMeta = in.TypeMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
+	if in.Items != nil {
+		in, out := &in.Items, &out.Items
+		*out = make([]Connector, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+}
+
+func (in *ConnectorList) DeepCopy() *ConnectorList {
+	if in == nil {
+		return nil
+	}
+	out := new(ConnectorList)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *ConnectorList) DeepCopyObject() runtime.Object {
+	if c := in.DeepCopy(); c != nil {
+		return c
+	}
+	return nil
+}
+
+// --- Persona ---
+
+func (in *PersonaSpec) DeepCopyInto(out *PersonaSpec) {
+	*out = *in
+}
+
+func (in *PersonaSpec) DeepCopy() *PersonaSpec {
+	if in == nil {
+		return nil
+	}
+	out := new(PersonaSpec)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *PersonaStatus) DeepCopyInto(out *PersonaStatus) {
+	*out = *in
+	if in.Conditions != nil {
+		in, out := &in.Conditions, &out.Conditions
+		*out = make([]metav1.Condition, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+}
+
+func (in *PersonaStatus) DeepCopy() *PersonaStatus {
+	if in == nil {
+		return nil
+	}
+	out := new(PersonaStatus)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *Persona) DeepCopyInto(out *Persona) {
+	*out = *in
+	out.TypeMeta = in.TypeMeta
+	in.ObjectMeta.DeepCopyInto(&out.ObjectMeta)
+	in.Spec.DeepCopyInto(&out.Spec)
+	in.Status.DeepCopyInto(&out.Status)
+}
+
+func (in *Persona) DeepCopy() *Persona {
+	if in == nil {
+		return nil
+	}
+	out := new(Persona)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *Persona) DeepCopyObject() runtime.Object {
+	if c := in.DeepCopy(); c != nil {
+		return c
+	}
+	return nil
+}
+
+func (in *PersonaList) DeepCopyInto(out *PersonaList) {
+	*out = *in
+	out.TypeMeta = in.TypeMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
+	if in.Items != nil {
+		in, out := &in.Items, &out.Items
+		*out = make([]Persona, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+}
+
+func (in *PersonaList) DeepCopy() *PersonaList {
+	if in == nil {
+		return nil
+	}
+	out := new(PersonaList)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *PersonaList) DeepCopyObject() runtime.Object {
+	if c := in.DeepCopy(); c != nil {
+		return c
+	}
+	return nil
+}
+
+// --- KnowledgeBase ---
+
+func (in *KnowledgeBaseSpec) DeepCopyInto(out *KnowledgeBaseSpec) {
+	*out = *in
+}
+
+func (in *KnowledgeBaseSpec) DeepCopy() *KnowledgeBaseSpec {
+	if in == nil {
+		return nil
+	}
+	out := new(KnowledgeBaseSpec)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *KnowledgeBaseStatus) DeepCopyInto(out *KnowledgeBaseStatus) {
+	*out = *in
+	if in.Conditions != nil {
+		in, out := &in.Conditions, &out.Conditions
+		*out = make([]metav1.Condition, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+}
+
+func (in *KnowledgeBaseStatus) DeepCopy() *KnowledgeBaseStatus {
+	if in == nil {
+		return nil
+	}
+	out := new(KnowledgeBaseStatus)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *KnowledgeBase) DeepCopyInto(out *KnowledgeBase) {
+	*out = *in
+	out.TypeMeta = in.TypeMeta
+	in.ObjectMeta.DeepCopyInto(&out.ObjectMeta)
+	in.Spec.DeepCopyInto(&out.Spec)
+	in.Status.DeepCopyInto(&out.Status)
+}
+
+func (in *KnowledgeBase) DeepCopy() *KnowledgeBase {
+	if in == nil {
+		return nil
+	}
+	out := new(KnowledgeBase)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *KnowledgeBase) DeepCopyObject() runtime.Object {
+	if c := in.DeepCopy(); c != nil {
+		return c
+	}
+	return nil
+}
+
+func (in *KnowledgeBaseList) DeepCopyInto(out *KnowledgeBaseList) {
+	*out = *in
+	out.TypeMeta = in.TypeMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
+	if in.Items != nil {
+		in, out := &in.Items, &out.Items
+		*out = make([]KnowledgeBase, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+}
+
+func (in *KnowledgeBaseList) DeepCopy() *KnowledgeBaseList {
+	if in == nil {
+		return nil
+	}
+	out := new(KnowledgeBaseList)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *KnowledgeBaseList) DeepCopyObject() runtime.Object {
+	if c := in.DeepCopy(); c != nil {
+		return c
+	}
+	return nil
+}
+
+// --- Workflow ---
+
+func (in *WorkflowSpec) DeepCopyInto(out *WorkflowSpec) {
+	*out = *in
+}
+
+func (in *WorkflowSpec) DeepCopy() *WorkflowSpec {
+	if in == nil {
+		return nil
+	}
+	out := new(WorkflowSpec)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *WorkflowStatus) DeepCopyInto(out *WorkflowStatus) {
+	*out = *in
+	if in.Conditions != nil {
+		in, out := &in.Conditions, &out.Conditions
+		*out = make([]metav1.Condition, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+}
+
+func (in *WorkflowStatus) DeepCopy() *WorkflowStatus {
+	if in == nil {
+		return nil
+	}
+	out := new(WorkflowStatus)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *Workflow) DeepCopyInto(out *Workflow) {
+	*out = *in
+	out.TypeMeta = in.TypeMeta
+	in.ObjectMeta.DeepCopyInto(&out.ObjectMeta)
+	in.Spec.DeepCopyInto(&out.Spec)
+	in.Status.DeepCopyInto(&out.Status)
+}
+
+func (in *Workflow) DeepCopy() *Workflow {
+	if in == nil {
+		return nil
+	}
+	out := new(Workflow)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *Workflow) DeepCopyObject() runtime.Object {
+	if c := in.DeepCopy(); c != nil {
+		return c
+	}
+	return nil
+}
+
+func (in *WorkflowList) DeepCopyInto(out *WorkflowList) {
+	*out = *in
+	out.TypeMeta = in.TypeMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
+	if in.Items != nil {
+		in, out := &in.Items, &out.Items
+		*out = make([]Workflow, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+}
+
+func (in *WorkflowList) DeepCopy() *WorkflowList {
+	if in == nil {
+		return nil
+	}
+	out := new(WorkflowList)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *WorkflowList) DeepCopyObject() runtime.Object {
+	if c := in.DeepCopy(); c != nil {
+		return c
+	}
+	return nil
+}
+
+// --- ChatChannel ---
+
+func (in *ChatChannelSpec) DeepCopyInto(out *ChatChannelSpec) {
+	*out = *in
+}
+
+func (in *ChatChannelSpec) DeepCopy() *ChatChannelSpec {
+	if in == nil {
+		return nil
+	}
+	out := new(ChatChannelSpec)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *ChatChannelStatus) DeepCopyInto(out *ChatChannelStatus) {
+	*out = *in
+	if in.Conditions != nil {
+		in, out := &in.Conditions, &out.Conditions
+		*out = make([]metav1.Condition, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+}
+
+func (in *ChatChannelStatus) DeepCopy() *ChatChannelStatus {
+	if in == nil {
+		return nil
+	}
+	out := new(ChatChannelStatus)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *ChatChannel) DeepCopyInto(out *ChatChannel) {
+	*out = *in
+	out.TypeMeta = in.TypeMeta
+	in.ObjectMeta.DeepCopyInto(&out.ObjectMeta)
+	in.Spec.DeepCopyInto(&out.Spec)
+	in.Status.DeepCopyInto(&out.Status)
+}
+
+func (in *ChatChannel) DeepCopy() *ChatChannel {
+	if in == nil {
+		return nil
+	}
+	out := new(ChatChannel)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *ChatChannel) DeepCopyObject() runtime.Object {
+	if c := in.DeepCopy(); c != nil {
+		return c
+	}
+	return nil
+}
+
+func (in *ChatChannelList) DeepCopyInto(out *ChatChannelList) {
+	*out = *in
+	out.TypeMeta = in.TypeMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
+	if in.Items != nil {
+		in, out := &in.Items, &out.Items
+		*out = make([]ChatChannel, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+}
+
+func (in *ChatChannelList) DeepCopy() *ChatChannelList {
+	if in == nil {
+		return nil
+	}
+	out := new(ChatChannelList)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *ChatChannelList) DeepCopyObject() runtime.Object {
+	if c := in.DeepCopy(); c != nil {
+		return c
+	}
+	return nil
+}
+
+// --- MaintenanceWindow ---
+
+func (in *MaintenanceWindowSpec) DeepCopyInto(out *MaintenanceWindowSpec) {
+	*out = *in
+}
+
+func (in *MaintenanceWindowSpec) DeepCopy() *MaintenanceWindowSpec {
+	if in == nil {
+		return nil
+	}
+	out := new(MaintenanceWindowSpec)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *MaintenanceWindowStatus) DeepCopyInto(out *MaintenanceWindowStatus) {
+	*out = *in
+	if in.Conditions != nil {
+		in, out := &in.Conditions, &out.Conditions
+		*out = make([]metav1.Condition, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+}
+
+func (in *MaintenanceWindowStatus) DeepCopy() *MaintenanceWindowStatus {
+	if in == nil {
+		return nil
+	}
+	out := new(MaintenanceWindowStatus)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *MaintenanceWindow) DeepCopyInto(out *MaintenanceWindow) {
+	*out = *in
+	out.TypeMeta = in.TypeMeta
+	in.ObjectMeta.DeepCopyInto(&out.ObjectMeta)
+	in.Spec.DeepCopyInto(&out.Spec)
+	in.Status.DeepCopyInto(&out.Status)
+}
+
+func (in *MaintenanceWindow) DeepCopy() *MaintenanceWindow {
+	if in == nil {
+		return nil
+	}
+	out := new(MaintenanceWindow)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *MaintenanceWindow) DeepCopyObject() runtime.Object {
+	if c := in.DeepCopy(); c != nil {
+		return c
+	}
+	return nil
+}
+
+func (in *MaintenanceWindowList) DeepCopyInto(out *MaintenanceWindowList) {
+	*out = *in
+	out.TypeMeta = in.TypeMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
+	if in.Items != nil {
+		in, out := &in.Items, &out.Items
+		*out = make([]MaintenanceWindow, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+}
+
+func (in *MaintenanceWindowList) DeepCopy() *MaintenanceWindowList {
+	if in == nil {
+		return nil
+	}
+	out := new(MaintenanceWindowList)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *MaintenanceWindowList) DeepCopyObject() runtime.Object {
+	if c := in.DeepCopy(); c != nil {
+		return c
+	}
+	return nil
+}
+
+// --- Environment ---
+
+func (in *EnvironmentSpec) DeepCopyInto(out *EnvironmentSpec) {
+	*out = *in
+	if in.Variables != nil {
+		in, out := &in.Variables, &out.Variables
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
+	}
+}
+
+func (in *EnvironmentSpec) DeepCopy() *EnvironmentSpec {
+	if in == nil {
+		return nil
+	}
+	out := new(EnvironmentSpec)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *EnvironmentStatus) DeepCopyInto(out *EnvironmentStatus) {
+	*out = *in
+	if in.Conditions != nil {
+		in, out := &in.Conditions, &out.Conditions
+		*out = make([]metav1.Condition, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+}
+
+func (in *EnvironmentStatus) DeepCopy() *EnvironmentStatus {
+	if in == nil {
+		return nil
+	}
+	out := new(EnvironmentStatus)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *Environment) DeepCopyInto(out *Environment) {
+	*out = *in
+	out.TypeMeta = in.TypeMeta
+	in.ObjectMeta.DeepCopyInto(&out.ObjectMeta)
+	in.Spec.DeepCopyInto(&out.Spec)
+	in.Status.DeepCopyInto(&out.Status)
+}
+
+func (in *Environment) DeepCopy() *Environment {
+	if in == nil {
+		return nil
+	}
+	out := new(Environment)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *Environment) DeepCopyObject() runtime.Object {
+	if c := in.DeepCopy(); c != nil {
+		return c
+	}
+	return nil
+}
+
+func (in *EnvironmentList) DeepCopyInto(out *EnvironmentList) {
+	*out = *in
+	out.TypeMeta = in.TypeMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
+	if in.Items != nil {
+		in, out := &in.Items, &out.Items
+		*out = make([]Environment, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+}
+
+func (in *EnvironmentList) DeepCopy() *EnvironmentList {
+	if in == nil {
+		return nil
+	}
+	out := new(EnvironmentList)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *EnvironmentList) DeepCopyObject() runtime.Object {
+	if c := in.DeepCopy(); c != nil {
+		return c
+	}
+	return nil
+}

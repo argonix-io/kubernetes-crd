@@ -1,0 +1,22 @@
+apiVersion: argonix.io/v1alpha1
+kind: Workflow
+metadata:
+  name: example-restart-pod
+spec:
+  name: "Restart Failing Pod"
+  slug: restart-failing-pod
+  category: devops
+  steps: '[{"action": "identify_pod", "connector_type": "kubernetes"}, {"action": "restart_pod", "connector_type": "kubernetes"}, {"action": "notify", "connector_type": "slack"}]'
+  requiredConnectorTypes: '["kubernetes", "slack"]'
+  requiresConfirmation: true
+---
+apiVersion: argonix.io/v1alpha1
+kind: Workflow
+metadata:
+  name: example-daily-report
+spec:
+  name: "Daily Status Report"
+  slug: daily-status-report
+  category: general
+  schedule: "0 9 * * *"
+  requiresConfirmation: false

@@ -1,0 +1,20 @@
+apiVersion: argonix.io/v1alpha1
+kind: ChatChannel
+metadata:
+  name: example-slack-channel
+spec:
+  channelType: slack
+  channelId: "C01234567"
+  channelName: "#ops-incidents"
+  personaId: "persona-uuid"
+  connectorId: "connector-uuid"
+---
+apiVersion: argonix.io/v1alpha1
+kind: ChatChannel
+metadata:
+  name: example-teams-channel
+spec:
+  channelType: teams
+  channelId: "19:abc123@thread.tacv2"
+  channelName: "Incidents"
+  connectorId: "teams-connector-uuid"

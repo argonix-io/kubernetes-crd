@@ -95,6 +95,13 @@ func main() {
 		{"TestSuite", controller.SetupTestSuiteReconciler},
 		{"ManualTestCase", controller.SetupManualTestCaseReconciler},
 		{"TestPlan", controller.SetupTestPlanReconciler},
+		{"Connector", controller.SetupConnectorReconciler},
+		{"Persona", controller.SetupPersonaReconciler},
+		{"KnowledgeBase", controller.SetupKnowledgeBaseReconciler},
+		{"Workflow", controller.SetupWorkflowReconciler},
+		{"ChatChannel", controller.SetupChatChannelReconciler},
+		{"MaintenanceWindow", controller.SetupMaintenanceWindowReconciler},
+		{"Environment", controller.SetupEnvironmentReconciler},
 	}
 
 	for _, sf := range setupFuncs {

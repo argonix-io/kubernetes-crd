@@ -55,6 +55,12 @@ type NotificationRuleSpec struct {
 	// Channels is a list of alert channel UUIDs to notify.
 	// +kubebuilder:validation:Required
 	Channels []string `json:"channels"`
+
+	// AutoInvestigate enables Argos AI auto-investigation when the rule triggers.
+	// When enabled, Argos will automatically investigate the root cause and post analysis to channels.
+	// +kubebuilder:default=false
+	// +optional
+	AutoInvestigate bool `json:"autoInvestigate,omitempty"`
 }
 
 // NotificationRuleStatus defines the observed state of a NotificationRule.

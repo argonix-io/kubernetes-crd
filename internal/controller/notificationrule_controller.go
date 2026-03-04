@@ -28,6 +28,7 @@ func SetupNotificationRuleReconciler(mgr ctrl.Manager, ac *argonixclient.Client)
 					"monitors":             s.Monitors,
 					"synthetic_tests":      s.SyntheticTests,
 					"channels":             s.Channels,
+					"auto_investigate":     s.AutoInvestigate,
 				}
 			},
 			GetResourceID: func(obj *v1alpha1.NotificationRule) string { return obj.Status.ID },
