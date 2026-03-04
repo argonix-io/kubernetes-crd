@@ -61,6 +61,19 @@ type NotificationRuleSpec struct {
 	// +kubebuilder:default=false
 	// +optional
 	AutoInvestigate bool `json:"autoInvestigate,omitempty"`
+
+	// AutoRemediate enables Argos AI auto-remediation when the rule triggers.
+	// Requires AutoInvestigate to be true. Argos will propose and/or execute remediation actions.
+	// +kubebuilder:default=false
+	// +optional
+	AutoRemediate bool `json:"autoRemediate,omitempty"`
+
+	// RemediationStrategy defines how remediation is executed.
+	// "auto" executes immediately; "approval_required" proposes a plan and waits for approval.
+	// +kubebuilder:validation:Enum=auto;approval_required
+	// +kubebuilder:default="approval_required"
+	// +optional
+	RemediationStrategy string `json:"remediationStrategy,omitempty"`
 }
 
 // NotificationRuleStatus defines the observed state of a NotificationRule.
