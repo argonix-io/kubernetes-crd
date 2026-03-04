@@ -8,7 +8,7 @@ import (
 type ChatChannelSpec struct {
 	// ChannelType is the type of chat channel.
 	// +kubebuilder:validation:Required
-	// +kubebuilder:validation:Enum=slack;teams;jira
+	// +kubebuilder:validation:Enum=slack;teams;discord;jira
 	ChannelType string `json:"channelType"`
 
 	// ChannelID is the external channel identifier.
