@@ -121,6 +121,22 @@ type MonitorSpec struct {
 	// +optional
 	RemediationWaitSeconds int64 `json:"remediationWaitSeconds,omitempty"`
 
+	// AutoInvestigate enables Argos AI auto-investigation when the monitor goes down.
+	// +kubebuilder:default=false
+	// +optional
+	AutoInvestigate bool `json:"autoInvestigate,omitempty"`
+
+	// AutoRemediate enables Argos AI auto-remediation after investigation.
+	// +kubebuilder:default=false
+	// +optional
+	AutoRemediate bool `json:"autoRemediate,omitempty"`
+
+	// RemediationStrategy is the remediation strategy: auto or approval_required.
+	// +kubebuilder:default="approval_required"
+	// +kubebuilder:validation:Enum=auto;approval_required
+	// +optional
+	RemediationStrategy string `json:"remediationStrategy,omitempty"`
+
 	// HeartbeatGraceSeconds is the grace period in seconds for heartbeat monitors.
 	// +kubebuilder:default=0
 	// +optional
