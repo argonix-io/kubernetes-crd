@@ -1518,3 +1518,109 @@ func (in *EnvironmentList) DeepCopyObject() runtime.Object {
 	}
 	return nil
 }
+
+// --- ArgosSettings ---
+
+func (in *SecretKeyRef) DeepCopyInto(out *SecretKeyRef) {
+	*out = *in
+}
+
+func (in *SecretKeyRef) DeepCopy() *SecretKeyRef {
+	if in == nil {
+		return nil
+	}
+	out := new(SecretKeyRef)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *ArgosSettingsSpec) DeepCopyInto(out *ArgosSettingsSpec) {
+	*out = *in
+	if in.LLMApiKeySecretRef != nil {
+		in, out := &in.LLMApiKeySecretRef, &out.LLMApiKeySecretRef
+		*out = new(SecretKeyRef)
+		**out = **in
+	}
+}
+
+func (in *ArgosSettingsSpec) DeepCopy() *ArgosSettingsSpec {
+	if in == nil {
+		return nil
+	}
+	out := new(ArgosSettingsSpec)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *ArgosSettingsStatus) DeepCopyInto(out *ArgosSettingsStatus) {
+	*out = *in
+	if in.Conditions != nil {
+		in, out := &in.Conditions, &out.Conditions
+		*out = make([]metav1.Condition, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+}
+
+func (in *ArgosSettingsStatus) DeepCopy() *ArgosSettingsStatus {
+	if in == nil {
+		return nil
+	}
+	out := new(ArgosSettingsStatus)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *ArgosSettings) DeepCopyInto(out *ArgosSettings) {
+	*out = *in
+	out.TypeMeta = in.TypeMeta
+	in.ObjectMeta.DeepCopyInto(&out.ObjectMeta)
+	in.Spec.DeepCopyInto(&out.Spec)
+	in.Status.DeepCopyInto(&out.Status)
+}
+
+func (in *ArgosSettings) DeepCopy() *ArgosSettings {
+	if in == nil {
+		return nil
+	}
+	out := new(ArgosSettings)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *ArgosSettings) DeepCopyObject() runtime.Object {
+	if c := in.DeepCopy(); c != nil {
+		return c
+	}
+	return nil
+}
+
+func (in *ArgosSettingsList) DeepCopyInto(out *ArgosSettingsList) {
+	*out = *in
+	out.TypeMeta = in.TypeMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
+	if in.Items != nil {
+		in, out := &in.Items, &out.Items
+		*out = make([]ArgosSettings, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+}
+
+func (in *ArgosSettingsList) DeepCopy() *ArgosSettingsList {
+	if in == nil {
+		return nil
+	}
+	out := new(ArgosSettingsList)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *ArgosSettingsList) DeepCopyObject() runtime.Object {
+	if c := in.DeepCopy(); c != nil {
+		return c
+	}
+	return nil
+}
