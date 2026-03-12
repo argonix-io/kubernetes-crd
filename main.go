@@ -102,6 +102,7 @@ func main() {
 		{"ChatChannel", controller.SetupChatChannelReconciler},
 		{"MaintenanceWindow", controller.SetupMaintenanceWindowReconciler},
 		{"Environment", controller.SetupEnvironmentReconciler},
+		{"ArgosSettings", controller.SetupArgosSettingsReconciler},
 	}
 
 	for _, sf := range setupFuncs {
