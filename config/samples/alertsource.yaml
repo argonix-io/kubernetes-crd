@@ -1,0 +1,33 @@
+apiVersion: argonix.io/v1alpha1
+kind: AlertSource
+metadata:
+  name: example-alertmanager
+spec:
+  name: "Production Alertmanager"
+  sourceType: alertmanager
+  autoInvestigate: true
+  channels:
+    - "channel-uuid-1"
+---
+apiVersion: argonix.io/v1alpha1
+kind: AlertSource
+metadata:
+  name: example-datadog
+spec:
+  name: "Datadog Production"
+  sourceType: datadog
+  autoInvestigate: true
+  autoRemediate: true
+  remediationStrategy: approval_required
+  connector: "connector-uuid"
+  channels:
+    - "channel-uuid-1"
+    - "channel-uuid-2"
+---
+apiVersion: argonix.io/v1alpha1
+kind: AlertSource
+metadata:
+  name: example-generic-webhook
+spec:
+  name: "Custom Webhook"
+  sourceType: generic

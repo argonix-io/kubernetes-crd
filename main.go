@@ -103,6 +103,7 @@ func main() {
 		{"MaintenanceWindow", controller.SetupMaintenanceWindowReconciler},
 		{"Environment", controller.SetupEnvironmentReconciler},
 		{"ArgosSettings", controller.SetupArgosSettingsReconciler},
+		{"AlertSource", controller.SetupAlertSourceReconciler},
 	}
 
 	for _, sf := range setupFuncs {

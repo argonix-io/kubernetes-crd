@@ -22,6 +22,7 @@ rules:
       - testsuites
       - manualtestcases
       - testplans
+      - alertsources
     verbs:
       - create
       - delete
@@ -43,6 +44,7 @@ rules:
       - testsuites/status
       - manualtestcases/status
       - testplans/status
+      - alertsources/status
     verbs:
       - get
       - patch
@@ -60,6 +62,7 @@ rules:
       - testsuites/finalizers
       - manualtestcases/finalizers
       - testplans/finalizers
+      - alertsources/finalizers
     verbs:
       - update
   # Events

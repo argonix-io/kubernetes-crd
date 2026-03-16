@@ -1,0 +1,124 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: alertsources.argonix.io
+  labels:
+    {{- include "argonix-crd.labels" . | nindent 4 }}
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.15.0
+spec:
+  group: argonix.io
+  names:
+    kind: AlertSource
+    listKind: AlertSourceList
+    plural: alertsources
+    singular: alertsource
+  scope: Namespaced
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      additionalPrinterColumns:
+        - name: Source
+          type: string
+          jsonPath: .spec.sourceType
+        - name: Active
+          type: boolean
+          jsonPath: .spec.isActive
+        - name: Received
+          type: integer
+          jsonPath: .status.totalReceived
+        - name: Age
+          type: date
+          jsonPath: .metadata.creationTimestamp
+      subresources:
+        status: {}
+      schema:
+        openAPIV3Schema:
+          type: object
+          description: AlertSource is the Schema for the alertsources API.
+          properties:
+            apiVersion:
+              type: string
+            kind:
+              type: string
+            metadata:
+              type: object
+            spec:
+              type: object
+              required:
+                - name
+                - sourceType
+              properties:
+                name:
+                  type: string
+                sourceType:
+                  type: string
+                  enum: [alertmanager, datadog, grafana, pagerduty, opsgenie, generic]
+                isActive:
+                  type: boolean
+                  default: true
+                connector:
+                  type: string
+                  description: UUID of the connector to use for investigation/remediation.
+                filters:
+                  type: string
+                  description: JSON-encoded filter configuration for incoming alerts.
+                autoInvestigate:
+                  type: boolean
+                  default: false
+                autoRemediate:
+                  type: boolean
+                  default: false
+                remediationStrategy:
+                  type: string
+                  enum: [auto, approval_required]
+                  default: approval_required
+                channels:
+                  type: array
+                  items:
+                    type: string
+                  description: List of alert channel UUIDs to notify.
+            status:
+              type: object
+              properties:
+                id:
+                  type: string
+                webhookSecret:
+                  type: string
+                webhookUrl:
+                  type: string
+                lastReceivedAt:
+                  type: string
+                totalReceived:
+                  type: integer
+                  format: int64
+                dateCreated:
+                  type: string
+                dateModified:
+                  type: string
+                conditions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      lastTransitionTime:
+                        type: string
+                        format: date-time
+                      message:
+                        type: string
+                      observedGeneration:
+                        type: integer
+                        format: int64
+                      reason:
+                        type: string
+                      status:
+                        type: string
+                      type:
+                        type: string
+                    required:
+                      - lastTransitionTime
+                      - message
+                      - reason
+                      - status
+                      - type

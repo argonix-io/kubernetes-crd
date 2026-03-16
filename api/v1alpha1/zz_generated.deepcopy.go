@@ -1624,3 +1624,96 @@ func (in *ArgosSettingsList) DeepCopyObject() runtime.Object {
 	}
 	return nil
 }
+
+// --- AlertSource ---
+
+func (in *AlertSourceSpec) DeepCopyInto(out *AlertSourceSpec) {
+	*out = *in
+	if in.Channels != nil {
+		in, out := &in.Channels, &out.Channels
+		*out = make([]string, len(*in))
+		copy(*out, *in)
+	}
+}
+
+func (in *AlertSourceSpec) DeepCopy() *AlertSourceSpec {
+	if in == nil {
+		return nil
+	}
+	out := new(AlertSourceSpec)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *AlertSourceStatus) DeepCopyInto(out *AlertSourceStatus) {
+	*out = *in
+	if in.Conditions != nil {
+		in, out := &in.Conditions, &out.Conditions
+		*out = make([]metav1.Condition, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+}
+
+func (in *AlertSourceStatus) DeepCopy() *AlertSourceStatus {
+	if in == nil {
+		return nil
+	}
+	out := new(AlertSourceStatus)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *AlertSource) DeepCopyInto(out *AlertSource) {
+	*out = *in
+	out.TypeMeta = in.TypeMeta
+	in.ObjectMeta.DeepCopyInto(&out.ObjectMeta)
+	in.Spec.DeepCopyInto(&out.Spec)
+	in.Status.DeepCopyInto(&out.Status)
+}
+
+func (in *AlertSource) DeepCopy() *AlertSource {
+	if in == nil {
+		return nil
+	}
+	out := new(AlertSource)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *AlertSource) DeepCopyObject() runtime.Object {
+	if c := in.DeepCopy(); c != nil {
+		return c
+	}
+	return nil
+}
+
+func (in *AlertSourceList) DeepCopyInto(out *AlertSourceList) {
+	*out = *in
+	out.TypeMeta = in.TypeMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
+	if in.Items != nil {
+		in, out := &in.Items, &out.Items
+		*out = make([]AlertSource, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+}
+
+func (in *AlertSourceList) DeepCopy() *AlertSourceList {
+	if in == nil {
+		return nil
+	}
+	out := new(AlertSourceList)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *AlertSourceList) DeepCopyObject() runtime.Object {
+	if c := in.DeepCopy(); c != nil {
+		return c
+	}
+	return nil
+}
