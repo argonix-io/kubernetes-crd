@@ -19,11 +19,11 @@ func SetupAlertSourceReconciler(mgr ctrl.Manager, ac *argonixclient.Client) erro
 			BuildPayload: func(obj *v1alpha1.AlertSource) map[string]interface{} {
 				s := obj.Spec
 				payload := map[string]interface{}{
-					"name":                 s.Name,
-					"source_type":          s.SourceType,
-					"is_active":            s.IsActive,
-					"auto_investigate":     s.AutoInvestigate,
-					"auto_remediate":       s.AutoRemediate,
+					"name":             s.Name,
+					"source_type":      s.SourceType,
+					"is_active":        s.IsActive,
+					"auto_investigate": s.AutoInvestigate,
+					"auto_remediate":   s.AutoRemediate,
 				}
 				if s.Connector != "" {
 					payload["connector"] = s.Connector
