@@ -59,7 +59,6 @@ func SetupMonitorReconciler(mgr ctrl.Manager, ac *argonixclient.Client) error {
 					"remediation_wait_seconds": s.RemediationWaitSeconds,
 					"auto_investigate":         s.AutoInvestigate,
 					"auto_remediate":           s.AutoRemediate,
-					"remediation_strategy":     s.RemediationStrategy,
 					"heartbeat_grace_seconds":  s.HeartbeatGraceSeconds,
 					"multi_step_config":        s.MultiStepConfig,
 					"grpc_service":             s.GRPCService,

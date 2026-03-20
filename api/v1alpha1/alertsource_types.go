@@ -38,12 +38,6 @@ type AlertSourceSpec struct {
 	// +optional
 	AutoRemediate bool `json:"autoRemediate,omitempty"`
 
-	// RemediationStrategy defines how remediation is executed.
-	// +kubebuilder:validation:Enum=auto;approval_required
-	// +kubebuilder:default="approval_required"
-	// +optional
-	RemediationStrategy string `json:"remediationStrategy,omitempty"`
-
 	// Channels is a list of alert channel UUIDs to notify when alerts are ingested.
 	// +optional
 	Channels []string `json:"channels,omitempty"`

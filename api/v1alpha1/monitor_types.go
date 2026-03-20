@@ -131,12 +131,6 @@ type MonitorSpec struct {
 	// +optional
 	AutoRemediate bool `json:"autoRemediate,omitempty"`
 
-	// RemediationStrategy is the remediation strategy: auto or approval_required.
-	// +kubebuilder:default="approval_required"
-	// +kubebuilder:validation:Enum=auto;approval_required
-	// +optional
-	RemediationStrategy string `json:"remediationStrategy,omitempty"`
-
 	// HeartbeatGraceSeconds is the grace period in seconds for heartbeat monitors.
 	// +kubebuilder:default=0
 	// +optional

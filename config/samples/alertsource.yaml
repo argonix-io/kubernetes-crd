@@ -18,7 +18,6 @@ spec:
   sourceType: datadog
   autoInvestigate: true
   autoRemediate: true
-  remediationStrategy: approval_required
   connector: "connector-uuid"
   channels:
     - "channel-uuid-1"

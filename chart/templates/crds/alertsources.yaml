@@ -70,10 +70,6 @@ spec:
                 autoRemediate:
                   type: boolean
                   default: false
-                remediationStrategy:
-                  type: string
-                  enum: [auto, approval_required]
-                  default: approval_required
                 channels:
                   type: array
                   items:
