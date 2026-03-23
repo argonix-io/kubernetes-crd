@@ -12,7 +12,7 @@ type ConnectorSpec struct {
 
 	// ConnectorType is the type of external service.
 	// +kubebuilder:validation:Required
-	// +kubebuilder:validation:Enum=slack;teams;pagerduty;opsgenie;jira;servicenow;github;gitlab;datadog;grafana;prometheus;cloudwatch;elastic;splunk;sentry;new_relic;aws;gcp;azure;kubernetes;terraform;ansible;jenkins;confluence;notion;linear;zendesk;okta;custom_webhook
+	// +kubebuilder:validation:Enum=slack;teams;pagerduty;opsgenie;jira;servicenow;github;gitlab;datadog;grafana;prometheus;cloudwatch;elastic;splunk;sentry;new_relic;aws;gcp;azure;kubernetes;terraform;ansible;jenkins;confluence;notion;linear;zendesk;okta;custom_webhook;mysql;postgresql;mssql;oracle;redis;memcached
 	ConnectorType string `json:"connectorType"`
 
 	// Config is a JSON-encoded configuration for the connector (API keys, tokens, etc.).
