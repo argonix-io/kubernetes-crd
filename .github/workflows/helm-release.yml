@@ -19,8 +19,8 @@ jobs:
 
       - name: Package chart
         run: |
-          helm dependency update charts
-          helm package charts --destination /tmp/helm-packages
+          helm dependency update chart
+          helm package chart --destination /tmp/helm-packages
 
       - name: Checkout charts repo
         uses: actions/checkout@v4
