@@ -1,0 +1,41 @@
+name: Helm Release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'charts/Chart.yaml'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout kubernetes-crd
+        uses: actions/checkout@v4
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Package chart
+        run: |
+          helm dependency update charts
+          helm package charts --destination /tmp/helm-packages
+
+      - name: Checkout charts repo
+        uses: actions/checkout@v4
+        with:
+          repository: argonix-io/charts
+          token: ${{ secrets.CHARTS_REPO_TOKEN }}
+          path: charts-repo
+
+      - name: Update index and push
+        run: |
+          cp /tmp/helm-packages/*.tgz charts-repo/
+          helm repo index charts-repo --url https://charts.argonix.io --merge charts-repo/index.yaml
+          cd charts-repo
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add .
+          git commit -m "release: $(ls /tmp/helm-packages/*.tgz | xargs basename)"
+          git push
