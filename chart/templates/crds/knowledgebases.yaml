@@ -1,0 +1,106 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: knowledgebases.argonix.io
+  labels:
+    {{- include "argonix-crd.labels" . | nindent 4 }}
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.15.0
+spec:
+  group: argonix.io
+  names:
+    kind: KnowledgeBase
+    listKind: KnowledgeBaseList
+    plural: knowledgebases
+    singular: knowledgebase
+  scope: Namespaced
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      additionalPrinterColumns:
+        - name: Source
+          type: string
+          jsonPath: .spec.sourceType
+        - name: Active
+          type: boolean
+          jsonPath: .spec.isActive
+        - name: Docs
+          type: integer
+          jsonPath: .status.documentCount
+        - name: Age
+          type: date
+          jsonPath: .metadata.creationTimestamp
+      subresources:
+        status: {}
+      schema:
+        openAPIV3Schema:
+          type: object
+          description: KnowledgeBase is the Schema for the knowledgebases API.
+          properties:
+            apiVersion:
+              type: string
+            kind:
+              type: string
+            metadata:
+              type: object
+            spec:
+              type: object
+              description: KnowledgeBaseSpec defines the desired state of a KnowledgeBase.
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: Display name of the knowledge base.
+                sourceType:
+                  type: string
+                  default: "manual"
+                  enum: [manual, confluence, notion, github, gitlab, web]
+                connectorId:
+                  type: string
+                isActive:
+                  type: boolean
+                  default: true
+                syncConfig:
+                  type: string
+            status:
+              type: object
+              description: KnowledgeBaseStatus defines the observed state of a KnowledgeBase.
+              properties:
+                id:
+                  type: string
+                lastSyncedAt:
+                  type: string
+                documentCount:
+                  type: integer
+                  format: int64
+                dateCreated:
+                  type: string
+                dateModified:
+                  type: string
+                conditions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      lastTransitionTime:
+                        type: string
+                        format: date-time
+                      message:
+                        type: string
+                      observedGeneration:
+                        type: integer
+                        format: int64
+                      reason:
+                        type: string
+                      status:
+                        type: string
+                      type:
+                        type: string
+                    required:
+                      - lastTransitionTime
+                      - message
+                      - reason
+                      - status
+                      - type

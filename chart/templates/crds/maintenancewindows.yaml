@@ -1,0 +1,115 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: maintenancewindows.argonix.io
+  labels:
+    {{- include "argonix-crd.labels" . | nindent 4 }}
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.15.0
+spec:
+  group: argonix.io
+  names:
+    kind: MaintenanceWindow
+    listKind: MaintenanceWindowList
+    plural: maintenancewindows
+    singular: maintenancewindow
+  scope: Namespaced
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      additionalPrinterColumns:
+        - name: Repeat
+          type: string
+          jsonPath: .spec.repeat
+        - name: Active
+          type: boolean
+          jsonPath: .spec.isActive
+        - name: Age
+          type: date
+          jsonPath: .metadata.creationTimestamp
+      subresources:
+        status: {}
+      schema:
+        openAPIV3Schema:
+          type: object
+          description: MaintenanceWindow is the Schema for the maintenancewindows API.
+          properties:
+            apiVersion:
+              type: string
+            kind:
+              type: string
+            metadata:
+              type: object
+            spec:
+              type: object
+              description: MaintenanceWindowSpec defines the desired state of a MaintenanceWindow.
+              required:
+                - name
+                - groupId
+              properties:
+                name:
+                  type: string
+                  description: Display name of the maintenance window.
+                groupId:
+                  type: string
+                  description: UUID of the group to apply the window to.
+                startsAt:
+                  type: string
+                endsAt:
+                  type: string
+                repeat:
+                  type: string
+                  default: "once"
+                  enum: [once, daily, weekly, monthly, cron]
+                timeFrom:
+                  type: string
+                timeTo:
+                  type: string
+                weekdays:
+                  type: string
+                dayOfMonth:
+                  type: integer
+                  format: int64
+                cronExpression:
+                  type: string
+                isActive:
+                  type: boolean
+                  default: true
+            status:
+              type: object
+              description: MaintenanceWindowStatus defines the observed state of a MaintenanceWindow.
+              properties:
+                id:
+                  type: string
+                scheduleSummary:
+                  type: string
+                dateCreated:
+                  type: string
+                dateModified:
+                  type: string
+                conditions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      lastTransitionTime:
+                        type: string
+                        format: date-time
+                      message:
+                        type: string
+                      observedGeneration:
+                        type: integer
+                        format: int64
+                      reason:
+                        type: string
+                      status:
+                        type: string
+                      type:
+                        type: string
+                    required:
+                      - lastTransitionTime
+                      - message
+                      - reason
+                      - status
+                      - type

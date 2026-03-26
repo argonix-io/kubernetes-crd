@@ -1,0 +1,108 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: chatchannels.argonix.io
+  labels:
+    {{- include "argonix-crd.labels" . | nindent 4 }}
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.15.0
+spec:
+  group: argonix.io
+  names:
+    kind: ChatChannel
+    listKind: ChatChannelList
+    plural: chatchannels
+    singular: chatchannel
+  scope: Namespaced
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      additionalPrinterColumns:
+        - name: Type
+          type: string
+          jsonPath: .spec.channelType
+        - name: Channel
+          type: string
+          jsonPath: .spec.channelName
+        - name: Active
+          type: boolean
+          jsonPath: .spec.isActive
+        - name: Age
+          type: date
+          jsonPath: .metadata.creationTimestamp
+      subresources:
+        status: {}
+      schema:
+        openAPIV3Schema:
+          type: object
+          description: ChatChannel is the Schema for the chatchannels API.
+          properties:
+            apiVersion:
+              type: string
+            kind:
+              type: string
+            metadata:
+              type: object
+            spec:
+              type: object
+              description: ChatChannelSpec defines the desired state of a ChatChannel.
+              required:
+                - channelType
+                - channelId
+                - connectorId
+              properties:
+                channelType:
+                  type: string
+                  description: Type of chat channel.
+                  enum: [slack, teams, discord, jira]
+                channelId:
+                  type: string
+                  description: External channel identifier.
+                connectorId:
+                  type: string
+                  description: UUID of the connector for this channel.
+                channelName:
+                  type: string
+                personaId:
+                  type: string
+                config:
+                  type: string
+                isActive:
+                  type: boolean
+                  default: true
+            status:
+              type: object
+              description: ChatChannelStatus defines the observed state of a ChatChannel.
+              properties:
+                id:
+                  type: string
+                dateCreated:
+                  type: string
+                dateModified:
+                  type: string
+                conditions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      lastTransitionTime:
+                        type: string
+                        format: date-time
+                      message:
+                        type: string
+                      observedGeneration:
+                        type: integer
+                        format: int64
+                      reason:
+                        type: string
+                      status:
+                        type: string
+                      type:
+                        type: string
+                    required:
+                      - lastTransitionTime
+                      - message
+                      - reason
+                      - status
+                      - type

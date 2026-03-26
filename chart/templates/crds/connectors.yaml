@@ -1,0 +1,103 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: connectors.argonix.io
+  labels:
+    {{- include "argonix-crd.labels" . | nindent 4 }}
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.15.0
+spec:
+  group: argonix.io
+  names:
+    kind: Connector
+    listKind: ConnectorList
+    plural: connectors
+    singular: connector
+  scope: Namespaced
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      additionalPrinterColumns:
+        - name: Type
+          type: string
+          jsonPath: .spec.connectorType
+        - name: Active
+          type: boolean
+          jsonPath: .spec.isActive
+        - name: Age
+          type: date
+          jsonPath: .metadata.creationTimestamp
+      subresources:
+        status: {}
+      schema:
+        openAPIV3Schema:
+          type: object
+          description: Connector is the Schema for the connectors API.
+          properties:
+            apiVersion:
+              type: string
+            kind:
+              type: string
+            metadata:
+              type: object
+            spec:
+              type: object
+              description: ConnectorSpec defines the desired state of a Connector.
+              required:
+                - name
+                - connectorType
+                - config
+              properties:
+                name:
+                  type: string
+                  description: Display name of the connector.
+                connectorType:
+                  type: string
+                  description: Type of external service.
+                  enum: [slack, teams, pagerduty, opsgenie, jira, servicenow, github, gitlab, datadog, grafana, prometheus, cloudwatch, elastic, splunk, sentry, new_relic, aws, gcp, azure, kubernetes, terraform, ansible, jenkins, confluence, notion, linear, zendesk, okta, custom_webhook, mysql, postgresql, mssql, oracle, redis, memcached]
+                config:
+                  type: string
+                  description: JSON-encoded configuration for the connector.
+                isActive:
+                  type: boolean
+                  default: true
+                capabilities:
+                  type: string
+                tags:
+                  type: string
+            status:
+              type: object
+              description: ConnectorStatus defines the observed state of a Connector.
+              properties:
+                id:
+                  type: string
+                dateCreated:
+                  type: string
+                dateModified:
+                  type: string
+                conditions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      lastTransitionTime:
+                        type: string
+                        format: date-time
+                      message:
+                        type: string
+                      observedGeneration:
+                        type: integer
+                        format: int64
+                      reason:
+                        type: string
+                      status:
+                        type: string
+                      type:
+                        type: string
+                    required:
+                      - lastTransitionTime
+                      - message
+                      - reason
+                      - status
+                      - type
