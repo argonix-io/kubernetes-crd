@@ -31,6 +31,10 @@ type ConnectorSpec struct {
 	// Tags is a JSON-encoded list of tags.
 	// +optional
 	Tags string `json:"tags,omitempty"`
+
+	// Scopes is a JSON-encoded object restricting where the connector can operate.
+	// +optional
+	Scopes string `json:"scopes,omitempty"`
 }
 
 // ConnectorStatus defines the observed state of a Connector.

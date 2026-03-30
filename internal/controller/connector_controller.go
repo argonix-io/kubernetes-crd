@@ -38,6 +38,12 @@ func SetupConnectorReconciler(mgr ctrl.Manager, ac *argonixclient.Client) error 
 						payload["tags"] = tags
 					}
 				}
+				if s.Scopes != "" {
+					var scopes interface{}
+					if err := json.Unmarshal([]byte(s.Scopes), &scopes); err == nil {
+						payload["scopes"] = scopes
+					}
+				}
 				return payload
 			},
 			GetResourceID: func(obj *v1alpha1.Connector) string { return obj.Status.ID },
