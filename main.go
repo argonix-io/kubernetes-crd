@@ -96,7 +96,6 @@ func main() {
 		{"ManualTestCase", controller.SetupManualTestCaseReconciler},
 		{"TestPlan", controller.SetupTestPlanReconciler},
 		{"Connector", controller.SetupConnectorReconciler},
-		{"Persona", controller.SetupPersonaReconciler},
 		{"KnowledgeBase", controller.SetupKnowledgeBaseReconciler},
 		{"Workflow", controller.SetupWorkflowReconciler},
 		{"ChatChannel", controller.SetupChatChannelReconciler},
