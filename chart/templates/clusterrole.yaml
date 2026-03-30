@@ -19,6 +19,14 @@ rules:
       - manualtestcases
       - testplans
       - alertsources
+      - chatchannels
+      - knowledgebases
+      - maintenancewindows
+      - environments
+      - personas
+      - connectors
+      - argossettings
+      - workflows
     verbs:
       - create
       - delete
@@ -41,6 +49,14 @@ rules:
       - manualtestcases/status
       - testplans/status
       - alertsources/status
+      - chatchannels/status
+      - knowledgebases/status
+      - maintenancewindows/status
+      - environments/status
+      - personas/status
+      - connectors/status
+      - argossettings/status
+      - workflows/status
     verbs:
       - get
       - patch
@@ -59,6 +75,14 @@ rules:
       - manualtestcases/finalizers
       - testplans/finalizers
       - alertsources/finalizers
+      - chatchannels/finalizers
+      - knowledgebases/finalizers
+      - maintenancewindows/finalizers
+      - environments/finalizers
+      - personas/finalizers
+      - connectors/finalizers
+      - argossettings/finalizers
+      - workflows/finalizers
     verbs:
       - update
   # Events
