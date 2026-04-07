@@ -103,6 +103,8 @@ func main() {
 		{"Environment", controller.SetupEnvironmentReconciler},
 		{"ArgosSettings", controller.SetupArgosSettingsReconciler},
 		{"AlertSource", controller.SetupAlertSourceReconciler},
+		{"SecurityPolicy", controller.SetupSecurityPolicyReconciler},
+		{"DetectionRule", controller.SetupDetectionRuleReconciler},
 	}
 
 	for _, sf := range setupFuncs {

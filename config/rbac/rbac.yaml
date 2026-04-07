@@ -23,6 +23,8 @@ rules:
       - manualtestcases
       - testplans
       - alertsources
+      - securitypolicies
+      - detectionrules
     verbs:
       - create
       - delete
@@ -45,6 +47,8 @@ rules:
       - manualtestcases/status
       - testplans/status
       - alertsources/status
+      - securitypolicies/status
+      - detectionrules/status
     verbs:
       - get
       - patch
@@ -58,6 +62,8 @@ rules:
       - groups/finalizers
       - notificationrules/finalizers
       - alertchannels/finalizers
+      - securitypolicies/finalizers
+      - detectionrules/finalizers
       - statuspages/finalizers
       - testsuites/finalizers
       - manualtestcases/finalizers

@@ -1,0 +1,22 @@
+apiVersion: argonix.io/v1alpha1
+kind: DetectionRule
+metadata:
+  name: brute-force-detection
+spec:
+  name: "Brute Force Detection"
+  ruleType: threshold
+  severity: high
+  config: '{"field": "severity", "value": "critical", "count": 5, "window_minutes": 10}'
+  mitreTactic: credential-access
+  mitreTechnique: "T1110"
+---
+apiVersion: argonix.io/v1alpha1
+kind: DetectionRule
+metadata:
+  name: recon-to-exfil
+spec:
+  name: "Recon-to-Exfil Kill Chain"
+  ruleType: sequence
+  severity: critical
+  config: '{"tactics": ["reconnaissance", "initial-access", "exfiltration"], "window_minutes": 60}'
+  mitreTactic: exfiltration

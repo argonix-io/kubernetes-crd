@@ -55,7 +55,7 @@ spec:
                 connectorType:
                   type: string
                   description: Type of external service.
-                  enum: [slack, teams, pagerduty, opsgenie, jira, servicenow, github, gitlab, datadog, grafana, prometheus, cloudwatch, elastic, splunk, sentry, new_relic, aws, gcp, azure, kubernetes, terraform, ansible, jenkins, confluence, notion, linear, zendesk, okta, custom_webhook, mysql, postgresql, mssql, oracle, redis, memcached]
+                  enum: [slack, teams, pagerduty, opsgenie, jira, servicenow, github, gitlab, datadog, grafana, prometheus, cloudwatch, elastic, splunk, sentry, new_relic, aws, gcp, azure, kubernetes, terraform, ansible, jenkins, confluence, notion, linear, zendesk, okta, custom_webhook, mysql, postgresql, mssql, oracle, redis, memcached, bigquery]
                 config:
                   type: string
                   description: JSON-encoded configuration for the connector.

@@ -234,3 +234,12 @@ func getString(m map[string]interface{}, key string) string {
 	}
 	return ""
 }
+
+func parseJSONStringField(jsonStr, key string, payload map[string]interface{}) {
+	if jsonStr != "" {
+		var v interface{}
+		if err := json.Unmarshal([]byte(jsonStr), &v); err == nil {
+			payload[key] = v
+		}
+	}
+}

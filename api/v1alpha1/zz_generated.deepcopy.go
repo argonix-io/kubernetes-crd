@@ -1717,3 +1717,179 @@ func (in *AlertSourceList) DeepCopyObject() runtime.Object {
 	}
 	return nil
 }
+
+// --- SecurityPolicy ---
+
+func (in *SecurityPolicySpec) DeepCopyInto(out *SecurityPolicySpec) {
+	*out = *in
+}
+
+func (in *SecurityPolicySpec) DeepCopy() *SecurityPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := new(SecurityPolicySpec)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *SecurityPolicyStatus) DeepCopyInto(out *SecurityPolicyStatus) {
+	*out = *in
+	if in.Conditions != nil {
+		in, out := &in.Conditions, &out.Conditions
+		*out = make([]metav1.Condition, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+}
+
+func (in *SecurityPolicyStatus) DeepCopy() *SecurityPolicyStatus {
+	if in == nil {
+		return nil
+	}
+	out := new(SecurityPolicyStatus)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *SecurityPolicy) DeepCopyInto(out *SecurityPolicy) {
+	*out = *in
+	out.TypeMeta = in.TypeMeta
+	in.ObjectMeta.DeepCopyInto(&out.ObjectMeta)
+	in.Spec.DeepCopyInto(&out.Spec)
+	in.Status.DeepCopyInto(&out.Status)
+}
+
+func (in *SecurityPolicy) DeepCopy() *SecurityPolicy {
+	if in == nil {
+		return nil
+	}
+	out := new(SecurityPolicy)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *SecurityPolicy) DeepCopyObject() runtime.Object {
+	if c := in.DeepCopy(); c != nil {
+		return c
+	}
+	return nil
+}
+
+func (in *SecurityPolicyList) DeepCopyInto(out *SecurityPolicyList) {
+	*out = *in
+	out.TypeMeta = in.TypeMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
+	if in.Items != nil {
+		in, out := &in.Items, &out.Items
+		*out = make([]SecurityPolicy, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+}
+
+func (in *SecurityPolicyList) DeepCopy() *SecurityPolicyList {
+	if in == nil {
+		return nil
+	}
+	out := new(SecurityPolicyList)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *SecurityPolicyList) DeepCopyObject() runtime.Object {
+	if c := in.DeepCopy(); c != nil {
+		return c
+	}
+	return nil
+}
+
+// --- DetectionRule ---
+
+func (in *DetectionRuleSpec) DeepCopyInto(out *DetectionRuleSpec) {
+	*out = *in
+}
+
+func (in *DetectionRuleSpec) DeepCopy() *DetectionRuleSpec {
+	if in == nil {
+		return nil
+	}
+	out := new(DetectionRuleSpec)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *DetectionRuleStatus) DeepCopyInto(out *DetectionRuleStatus) {
+	*out = *in
+	if in.Conditions != nil {
+		in, out := &in.Conditions, &out.Conditions
+		*out = make([]metav1.Condition, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+}
+
+func (in *DetectionRuleStatus) DeepCopy() *DetectionRuleStatus {
+	if in == nil {
+		return nil
+	}
+	out := new(DetectionRuleStatus)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *DetectionRule) DeepCopyInto(out *DetectionRule) {
+	*out = *in
+	out.TypeMeta = in.TypeMeta
+	in.ObjectMeta.DeepCopyInto(&out.ObjectMeta)
+	in.Spec.DeepCopyInto(&out.Spec)
+	in.Status.DeepCopyInto(&out.Status)
+}
+
+func (in *DetectionRule) DeepCopy() *DetectionRule {
+	if in == nil {
+		return nil
+	}
+	out := new(DetectionRule)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *DetectionRule) DeepCopyObject() runtime.Object {
+	if c := in.DeepCopy(); c != nil {
+		return c
+	}
+	return nil
+}
+
+func (in *DetectionRuleList) DeepCopyInto(out *DetectionRuleList) {
+	*out = *in
+	out.TypeMeta = in.TypeMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
+	if in.Items != nil {
+		in, out := &in.Items, &out.Items
+		*out = make([]DetectionRule, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+}
+
+func (in *DetectionRuleList) DeepCopy() *DetectionRuleList {
+	if in == nil {
+		return nil
+	}
+	out := new(DetectionRuleList)
+	in.DeepCopyInto(out)
+	return out
+}
+
+func (in *DetectionRuleList) DeepCopyObject() runtime.Object {
+	if c := in.DeepCopy(); c != nil {
+		return c
+	}
+	return nil
+}
