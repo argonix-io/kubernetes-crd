@@ -137,9 +137,9 @@ func (c *Client) Read(ctx context.Context, endpoint string, result interface{}) 
 	return c.doRequest(ctx, http.MethodGet, endpoint, nil, result)
 }
 
-// Update sends a PUT request to fully update a resource.
+// Update sends a PATCH request to update a resource.
 func (c *Client) Update(ctx context.Context, endpoint string, payload interface{}, result interface{}) error {
-	return c.doRequest(ctx, http.MethodPut, endpoint, payload, result)
+	return c.doRequest(ctx, http.MethodPatch, endpoint, payload, result)
 }
 
 // Delete sends a DELETE request to remove a resource.
