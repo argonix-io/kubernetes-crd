@@ -104,6 +104,7 @@ func main() {
 		{"ArgosSettings", controller.SetupArgosSettingsReconciler},
 		{"AlertSource", controller.SetupAlertSourceReconciler},
 		{"SecurityPolicy", controller.SetupSecurityPolicyReconciler},
+		{"SecurityScan", controller.SetupSecurityScanReconciler},
 		{"DetectionRule", controller.SetupDetectionRuleReconciler},
 	}
 
