@@ -56,14 +56,14 @@ type NotificationRuleSpec struct {
 	// +kubebuilder:validation:Required
 	Channels []string `json:"channels"`
 
-	// AutoInvestigate enables Argos AI auto-investigation when the rule triggers.
-	// When enabled, Argos will automatically investigate the root cause and post analysis to channels.
+	// AutoInvestigate is DEPRECATED — use Monitor.AutoInvestigate (per-monitor toggle) instead.
+	// This field is silently ignored by the Argonix API and will be removed in a future release.
 	// +kubebuilder:default=false
 	// +optional
 	AutoInvestigate bool `json:"autoInvestigate,omitempty"`
 
-	// AutoRemediate enables Argos AI auto-remediation when the rule triggers.
-	// Requires AutoInvestigate to be true. Argos will propose and/or execute remediation actions.
+	// AutoRemediate is DEPRECATED — use Monitor.AutoRemediate (per-monitor toggle) instead.
+	// This field is silently ignored by the Argonix API and will be removed in a future release.
 	// +kubebuilder:default=false
 	// +optional
 	AutoRemediate bool `json:"autoRemediate,omitempty"`

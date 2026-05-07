@@ -16,7 +16,7 @@ type DetectionRuleSpec struct {
 
 	// RuleType is the type of detection rule.
 	// +kubebuilder:validation:Required
-	// +kubebuilder:validation:Enum=threshold;pattern;sequence
+	// +kubebuilder:validation:Enum=threshold;pattern;sequence;anomaly;ip_reputation;ai
 	RuleType string `json:"ruleType"`
 
 	// Severity is the severity level assigned to detections from this rule.
