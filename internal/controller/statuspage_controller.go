@@ -27,6 +27,7 @@ func SetupStatusPageReconciler(mgr ctrl.Manager, ac *argonixclient.Client) error
 					"accent_color":      s.AccentColor,
 					"custom_css":        s.CustomCSS,
 					"show_health_graph": s.ShowHealthGraph,
+					"auto_publish_incidents": s.AutoPublishIncidents,
 					"is_active":         s.IsActive,
 				}
 			},

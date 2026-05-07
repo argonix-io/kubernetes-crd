@@ -42,6 +42,13 @@ type StatusPageSpec struct {
 	// +optional
 	ShowHealthGraph bool `json:"showHealthGraph,omitempty"`
 
+	// AutoPublishIncidents enables automatic publishing of alerts.Incident
+	// (from monitors linked to this page) as StatusPageIncident entries.
+	// Resolved incidents are automatically marked resolved on the status page.
+	// +kubebuilder:default=false
+	// +optional
+	AutoPublishIncidents bool `json:"autoPublishIncidents,omitempty"`
+
 	// IsActive indicates whether the status page is enabled.
 	// +kubebuilder:default=true
 	// +optional
