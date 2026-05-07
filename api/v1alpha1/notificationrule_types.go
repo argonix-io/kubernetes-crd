@@ -55,18 +55,6 @@ type NotificationRuleSpec struct {
 	// Channels is a list of alert channel UUIDs to notify.
 	// +kubebuilder:validation:Required
 	Channels []string `json:"channels"`
-
-	// AutoInvestigate is DEPRECATED — use Monitor.AutoInvestigate (per-monitor toggle) instead.
-	// This field is silently ignored by the Argonix API and will be removed in a future release.
-	// +kubebuilder:default=false
-	// +optional
-	AutoInvestigate bool `json:"autoInvestigate,omitempty"`
-
-	// AutoRemediate is DEPRECATED — use Monitor.AutoRemediate (per-monitor toggle) instead.
-	// This field is silently ignored by the Argonix API and will be removed in a future release.
-	// +kubebuilder:default=false
-	// +optional
-	AutoRemediate bool `json:"autoRemediate,omitempty"`
 }
 
 // NotificationRuleStatus defines the observed state of a NotificationRule.
