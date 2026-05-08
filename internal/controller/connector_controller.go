@@ -21,10 +21,11 @@ func SetupConnectorReconciler(mgr ctrl.Manager, ac *argonixclient.Client) error 
 			BuildPayload: func(obj *v1alpha1.Connector) map[string]interface{} {
 				s := obj.Spec
 				payload := map[string]interface{}{
-					"name":           s.Name,
-					"connector_type": s.ConnectorType,
-					"config":         s.Config,
-					"is_active":      s.IsActive,
+					"name":                  s.Name,
+					"connector_type":        s.ConnectorType,
+					"config":                s.Config,
+					"is_active":             s.IsActive,
+					"security_scan_enabled": s.SecurityScanEnabled,
 				}
 				if s.Capabilities != "" {
 					var caps interface{}

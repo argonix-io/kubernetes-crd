@@ -24,6 +24,12 @@ type ConnectorSpec struct {
 	// +optional
 	IsActive bool `json:"isActive,omitempty"`
 
+	// SecurityScanEnabled indicates whether this connector is included in
+	// scheduled security scans (when org-level scans are enabled).
+	// +kubebuilder:default=true
+	// +optional
+	SecurityScanEnabled bool `json:"securityScanEnabled,omitempty"`
+
 	// Capabilities is a JSON-encoded list of connector capabilities.
 	// +optional
 	Capabilities string `json:"capabilities,omitempty"`

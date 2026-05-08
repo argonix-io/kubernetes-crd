@@ -62,6 +62,10 @@ spec:
                 isActive:
                   type: boolean
                   default: true
+                securityScanEnabled:
+                  type: boolean
+                  default: true
+                  description: Include this connector in scheduled security scans.
                 capabilities:
                   type: string
                 tags:
