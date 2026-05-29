@@ -26,6 +26,13 @@ rules:
       - connectors
       - argossettings
       - workflows
+      - personas
+      - securitypolicies
+      - securityscans
+      - detectionrules
+      - healthnotebooks
+      - tenants
+      - costbudgets
     verbs:
       - create
       - delete
@@ -55,6 +62,13 @@ rules:
       - connectors/status
       - argossettings/status
       - workflows/status
+      - personas/status
+      - securitypolicies/status
+      - securityscans/status
+      - detectionrules/status
+      - healthnotebooks/status
+      - tenants/status
+      - costbudgets/status
     verbs:
       - get
       - patch
@@ -80,6 +94,13 @@ rules:
       - connectors/finalizers
       - argossettings/finalizers
       - workflows/finalizers
+      - personas/finalizers
+      - securitypolicies/finalizers
+      - securityscans/finalizers
+      - detectionrules/finalizers
+      - healthnotebooks/finalizers
+      - tenants/finalizers
+      - costbudgets/finalizers
     verbs:
       - update
   # Events

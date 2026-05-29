@@ -243,3 +243,19 @@ func parseJSONStringField(jsonStr, key string, payload map[string]interface{}) {
 		}
 	}
 }
+
+func getInt(m map[string]interface{}, key string) int {
+	v, ok := m[key]
+	if !ok || v == nil {
+		return 0
+	}
+	switch n := v.(type) {
+	case float64:
+		return int(n)
+	case int:
+		return n
+	case int64:
+		return int(n)
+	}
+	return 0
+}

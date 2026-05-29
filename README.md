@@ -17,6 +17,21 @@ This controller manages the following Argonix resources:
 | `TestSuite` | `/test-suites/` | Test suite groupings |
 | `ManualTestCase` | `/manual-test-cases/` | Manual test case definitions |
 | `TestPlan` | `/test-plans/` | Test plan orchestration |
+| `Connector` | `/argos/connectors/` | Integrations (cloud, K8s, Git, observability, ticketing…) |
+| `KnowledgeBase` | `/argos/knowledge-bases/` | Runbooks and docs the AI agent can consult |
+| `Workflow` | `/argos/workflows/` | Automated remediation/response workflows |
+| `Persona` | `/argos/personas/` | AI agent personas (scoped tools, prompts, approvals) |
+| `ChatChannel` | `/argos/chat-channels/` | Chat integrations for Argos (Slack, Teams…) |
+| `MaintenanceWindow` | `/maintenance-windows/` | Scheduled maintenance windows |
+| `Environment` | `/environments/` | Deployment environments |
+| `ArgosSettings` | `/argos/settings/` | Org-level Argos configuration |
+| `AlertSource` | `/argos/alert-sources/` | Inbound alert sources for incidents |
+| `SecurityPolicy` | `/security/policies/` | Deployment gate / compliance policies |
+| `SecurityScan` | `/security/scans/` | On-demand or scheduled security scans |
+| `DetectionRule` | `/security/detection-rules/` | Threat detection rules |
+| `HealthNotebook` | `/argos/health-notebooks/` | Scheduled AI infrastructure health reports ("carnet de santé") |
+| `Tenant` | `/finops/tenants/` | FinOps cost owners (team, product, client, environment) |
+| `CostBudget` | `/finops/budgets/` | FinOps spend budgets with threshold alerts |
 
 All resources belong to the `argonix.io/v1alpha1` API group.
 
@@ -120,7 +135,7 @@ make manifests
 
 ## Architecture
 
-The controller uses a **generic reconciler** pattern — a single `ResourceReconciler[T]` handles CRUD for all 9 resource types. Each resource provides a `ResourceAdapter[T]` that maps between the CRD spec and the Argonix API.
+The controller uses a **generic reconciler** pattern — a single `ResourceReconciler[T]` handles CRUD for all resource types. Each resource provides a `ResourceAdapter[T]` that maps between the CRD spec and the Argonix API.
 
 ### Reconciliation flow
 

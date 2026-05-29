@@ -1,0 +1,20 @@
+apiVersion: argonix.io/v1alpha1
+kind: HealthNotebook
+metadata:
+  name: daily-infra-health
+spec:
+  name: "Daily Infrastructure Health"
+  isActive: true
+  frequency: daily
+  scheduleHour: 7
+  scheduleMinute: 0
+  includeThreats: true
+  includeFindings: true
+  includeMonitors: true
+  includeIncidents: true
+  includeCost: true
+  # connectorIds: '["<connector-uuid>"]'   # empty = all org connectors
+  # notificationChannelIds: '["<chat-channel-uuid>"]'
+  # alertChannelIds: '["<alert-channel-uuid>"]'
+  ticketingMinSeverity: critical
+  ticketingAction: investigate

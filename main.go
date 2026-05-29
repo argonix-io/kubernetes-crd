@@ -98,6 +98,7 @@ func main() {
 		{"Connector", controller.SetupConnectorReconciler},
 		{"KnowledgeBase", controller.SetupKnowledgeBaseReconciler},
 		{"Workflow", controller.SetupWorkflowReconciler},
+		{"Persona", controller.SetupPersonaReconciler},
 		{"ChatChannel", controller.SetupChatChannelReconciler},
 		{"MaintenanceWindow", controller.SetupMaintenanceWindowReconciler},
 		{"Environment", controller.SetupEnvironmentReconciler},
@@ -106,6 +107,9 @@ func main() {
 		{"SecurityPolicy", controller.SetupSecurityPolicyReconciler},
 		{"SecurityScan", controller.SetupSecurityScanReconciler},
 		{"DetectionRule", controller.SetupDetectionRuleReconciler},
+		{"HealthNotebook", controller.SetupHealthNotebookReconciler},
+		{"Tenant", controller.SetupTenantReconciler},
+		{"CostBudget", controller.SetupCostBudgetReconciler},
 	}
 
 	for _, sf := range setupFuncs {

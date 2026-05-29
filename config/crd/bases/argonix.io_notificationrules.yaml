@@ -1,0 +1,221 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.15.0
+  name: notificationrules.argonix.io
+spec:
+  group: argonix.io
+  names:
+    kind: NotificationRule
+    listKind: NotificationRuleList
+    plural: notificationrules
+    singular: notificationrule
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.triggerCondition
+      name: Trigger
+      type: string
+    - jsonPath: .spec.isActive
+      name: Active
+      type: boolean
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: NotificationRule is the Schema for the notificationrules API.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: NotificationRuleSpec defines the desired state of a NotificationRule.
+            properties:
+              allMonitors:
+                default: false
+                description: AllMonitors indicates whether the rule applies to all
+                  monitors.
+                type: boolean
+              allSyntheticTests:
+                default: false
+                description: AllSyntheticTests indicates whether the rule applies
+                  to all synthetic tests.
+                type: boolean
+              autoInvestigate:
+                default: false
+                description: |-
+                  AutoInvestigate enables Argos AI auto-investigation when the rule triggers.
+                  When enabled, Argos will automatically investigate the root cause and post analysis to channels.
+                type: boolean
+              autoRemediate:
+                default: false
+                description: |-
+                  AutoRemediate enables Argos AI auto-remediation when the rule triggers.
+                  Requires AutoInvestigate to be true. Argos will propose and/or execute remediation actions.
+                type: boolean
+              channels:
+                description: Channels is a list of alert channel UUIDs to notify.
+                items:
+                  type: string
+                type: array
+              consecutiveFailures:
+                default: 1
+                description: ConsecutiveFailures is the number of consecutive failures
+                  before triggering.
+                format: int64
+                type: integer
+              cooldownMinutes:
+                default: 5
+                description: CooldownMinutes is the cooldown period in minutes between
+                  notifications.
+                format: int64
+                type: integer
+              isActive:
+                default: true
+                description: IsActive indicates whether the notification rule is enabled.
+                type: boolean
+              monitorTags:
+                description: MonitorTags is a list of tags to match monitors.
+                items:
+                  type: string
+                type: array
+              monitors:
+                description: Monitors is a list of monitor UUIDs this rule applies
+                  to.
+                items:
+                  type: string
+                type: array
+              name:
+                description: Name is the display name of the notification rule.
+                type: string
+              syntheticTests:
+                description: SyntheticTests is a list of synthetic test UUIDs this
+                  rule applies to.
+                items:
+                  type: string
+                type: array
+              triggerCondition:
+                description: TriggerCondition is the condition that triggers the notification.
+                enum:
+                - status_change
+                - goes_down
+                - goes_up
+                - degraded
+                - ssl_expiry
+                - test_failing
+                - test_passing
+                - test_run_complete
+                type: string
+            required:
+            - channels
+            - name
+            - triggerCondition
+            type: object
+          status:
+            description: NotificationRuleStatus defines the observed state of a NotificationRule.
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the resource's state.
+                items:
+                  description: "Condition contains details for one aspect of the current
+                    state of this API Resource.\n---\nThis struct is intended for
+                    direct use as an array at the field path .status.conditions.  For
+                    example,\n\n\n\ttype FooStatus struct{\n\t    // Represents the
+                    observations of a foo's current state.\n\t    // Known .status.conditions.type
+                    are: \"Available\", \"Progressing\", and \"Degraded\"\n\t    //
+                    +patchMergeKey=type\n\t    // +patchStrategy=merge\n\t    // +listType=map\n\t
+                    \   // +listMapKey=type\n\t    Conditions []metav1.Condition `json:\"conditions,omitempty\"
+                    patchStrategy:\"merge\" patchMergeKey:\"type\" protobuf:\"bytes,1,rep,name=conditions\"`\n\n\n\t
+                    \   // other fields\n\t}"
+                  properties:
+                    lastTransitionTime:
+                      description: |-
+                        lastTransitionTime is the last time the condition transitioned from one status to another.
+                        This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
+                      format: date-time
+                      type: string
+                    message:
+                      description: |-
+                        message is a human readable message indicating details about the transition.
+                        This may be an empty string.
+                      maxLength: 32768
+                      type: string
+                    observedGeneration:
+                      description: |-
+                        observedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      minimum: 0
+                      type: integer
+                    reason:
+                      description: |-
+                        reason contains a programmatic identifier indicating the reason for the condition's last transition.
+                        Producers of specific condition types may define expected values and meanings for this field,
+                        and whether the values are considered a guaranteed API.
+                        The value should be a CamelCase string.
+                        This field may not be empty.
+                      maxLength: 1024
+                      minLength: 1
+                      pattern: ^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$
+                      type: string
+                    status:
+                      description: status of the condition, one of True, False, Unknown.
+                      enum:
+                      - "True"
+                      - "False"
+                      - Unknown
+                      type: string
+                    type:
+                      description: |-
+                        type of condition in CamelCase or in foo.example.com/CamelCase.
+                        ---
+                        Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be
+                        useful (see .node.status.conditions), the ability to deconflict is important.
+                        The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)
+                      maxLength: 316
+                      pattern: ^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - message
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+              dateCreated:
+                description: DateCreated is the creation timestamp.
+                type: string
+              dateModified:
+                description: DateModified is the last modification timestamp.
+                type: string
+              id:
+                description: ID is the UUID of the notification rule in the Argonix
+                  API.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
