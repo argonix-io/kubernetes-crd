@@ -80,6 +80,9 @@ spec:
                 - threshold
                 - pattern
                 - sequence
+                - anomaly
+                - ip_reputation
+                - ai
                 type: string
               severity:
                 default: medium

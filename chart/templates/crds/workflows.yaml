@@ -60,6 +60,9 @@ spec:
                   enum: [identity, incident, onboarding, devops, security, general]
                 steps:
                   type: string
+                inputHints:
+                  type: string
+                  description: JSON-encoded map annotating each {{input.x}} referenced in steps with an optional description and example. Does not define the input set (derived from steps); orphan hints are ignored.
                 requiredConnectorTypes:
                   type: string
                 requiresConfirmation:

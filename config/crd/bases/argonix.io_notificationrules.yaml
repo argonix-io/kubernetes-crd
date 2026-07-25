@@ -59,18 +59,6 @@ spec:
                 description: AllSyntheticTests indicates whether the rule applies
                   to all synthetic tests.
                 type: boolean
-              autoInvestigate:
-                default: false
-                description: |-
-                  AutoInvestigate enables Argos AI auto-investigation when the rule triggers.
-                  When enabled, Argos will automatically investigate the root cause and post analysis to channels.
-                type: boolean
-              autoRemediate:
-                default: false
-                description: |-
-                  AutoRemediate enables Argos AI auto-remediation when the rule triggers.
-                  Requires AutoInvestigate to be true. Argos will propose and/or execute remediation actions.
-                type: boolean
               channels:
                 description: Channels is a list of alert channel UUIDs to notify.
                 items:

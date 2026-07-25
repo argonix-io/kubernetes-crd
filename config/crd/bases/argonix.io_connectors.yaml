@@ -107,6 +107,12 @@ spec:
                 description: Scopes is a JSON-encoded object restricting where the
                   connector can operate.
                 type: string
+              securityScanEnabled:
+                default: true
+                description: |-
+                  SecurityScanEnabled indicates whether this connector is included in
+                  scheduled security scans (when org-level scans are enabled).
+                type: boolean
               tags:
                 description: Tags is a JSON-encoded list of tags.
                 type: string

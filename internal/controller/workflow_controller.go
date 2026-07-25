@@ -35,6 +35,12 @@ func SetupWorkflowReconciler(mgr ctrl.Manager, ac *argonixclient.Client) error {
 						payload["steps"] = steps
 					}
 				}
+				if s.InputHints != "" {
+					var hints interface{}
+					if err := json.Unmarshal([]byte(s.InputHints), &hints); err == nil {
+						payload["input_hints"] = hints
+					}
+				}
 				if s.RequiredConnectorTypes != "" {
 					var rct interface{}
 					if err := json.Unmarshal([]byte(s.RequiredConnectorTypes), &rct); err == nil {

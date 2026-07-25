@@ -28,6 +28,13 @@ type WorkflowSpec struct {
 	// +optional
 	Steps string `json:"steps,omitempty"`
 
+	// InputHints is a JSON-encoded map annotating each {{input.x}} referenced
+	// in Steps with an optional description and example. It does not define the
+	// input set (that is always derived from the {{input.x}} references in
+	// Steps); orphan hints are ignored.
+	// +optional
+	InputHints string `json:"inputHints,omitempty"`
+
 	// RequiredConnectorTypes is a JSON-encoded list of required connector types.
 	// +optional
 	RequiredConnectorTypes string `json:"requiredConnectorTypes,omitempty"`

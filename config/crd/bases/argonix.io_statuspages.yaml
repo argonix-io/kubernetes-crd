@@ -56,6 +56,13 @@ spec:
                 default: '#3B82F6'
                 description: AccentColor is the hex color code for the accent color.
                 type: string
+              autoPublishIncidents:
+                default: false
+                description: |-
+                  AutoPublishIncidents enables automatic publishing of alerts.Incident
+                  (from monitors linked to this page) as StatusPageIncident entries.
+                  Resolved incidents are automatically marked resolved on the status page.
+                type: boolean
               customCss:
                 description: CustomCSS is custom CSS to apply to the status page.
                 type: string

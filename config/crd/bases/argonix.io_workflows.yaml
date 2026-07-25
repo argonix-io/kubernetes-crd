@@ -63,6 +63,13 @@ spec:
               description:
                 description: Description is a description of the workflow.
                 type: string
+              inputHints:
+                description: |-
+                  InputHints is a JSON-encoded map annotating each {{input.x}} referenced
+                  in Steps with an optional description and example. It does not define the
+                  input set (that is always derived from the {{input.x}} references in
+                  Steps); orphan hints are ignored.
+                type: string
               isActive:
                 default: true
                 description: IsActive indicates whether the workflow is enabled.
