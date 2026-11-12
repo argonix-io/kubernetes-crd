@@ -25,6 +25,23 @@ rules:
       - alertsources
       - securitypolicies
       - detectionrules
+      - srepatrols
+      - monitorgroups
+      - periodicjobs
+      - codeprojects
+      - chatchannels
+      - knowledgebases
+      - maintenancewindows
+      - environments
+      - connectors
+      - argossettings
+      - workflows
+      - personas
+      - securityscans
+      - scantargets
+      - healthnotebooks
+      - tenants
+      - costbudgets
     verbs:
       - create
       - delete
@@ -49,6 +66,23 @@ rules:
       - alertsources/status
       - securitypolicies/status
       - detectionrules/status
+      - srepatrols/status
+      - monitorgroups/status
+      - periodicjobs/status
+      - codeprojects/status
+      - chatchannels/status
+      - knowledgebases/status
+      - maintenancewindows/status
+      - environments/status
+      - connectors/status
+      - argossettings/status
+      - workflows/status
+      - personas/status
+      - securityscans/status
+      - scantargets/status
+      - healthnotebooks/status
+      - tenants/status
+      - costbudgets/status
     verbs:
       - get
       - patch
@@ -64,6 +98,23 @@ rules:
       - alertchannels/finalizers
       - securitypolicies/finalizers
       - detectionrules/finalizers
+      - srepatrols/finalizers
+      - monitorgroups/finalizers
+      - periodicjobs/finalizers
+      - codeprojects/finalizers
+      - chatchannels/finalizers
+      - knowledgebases/finalizers
+      - maintenancewindows/finalizers
+      - environments/finalizers
+      - connectors/finalizers
+      - argossettings/finalizers
+      - workflows/finalizers
+      - personas/finalizers
+      - securityscans/finalizers
+      - scantargets/finalizers
+      - healthnotebooks/finalizers
+      - tenants/finalizers
+      - costbudgets/finalizers
       - statuspages/finalizers
       - testsuites/finalizers
       - manualtestcases/finalizers

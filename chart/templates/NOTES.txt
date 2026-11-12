@@ -2,16 +2,9 @@ Thank you for installing {{ .Chart.Name }} v{{ .Chart.Version }}.
 
 The Argonix CRD controller is now running in namespace {{ .Release.Namespace }}.
 
-Available Custom Resources (argonix.io/v1alpha1):
-  - Monitor
-  - SyntheticTest
-  - Group
-  - AlertChannel
-  - NotificationRule
-  - StatusPage
-  - TestSuite
-  - ManualTestCase
-  - TestPlan
+Argonix resources use argonix.io/v1alpha1. To discover the installed kinds:
+
+  kubectl api-resources --api-group=argonix.io
 
 Quick start:
 

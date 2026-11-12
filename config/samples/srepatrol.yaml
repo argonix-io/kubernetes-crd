@@ -1,0 +1,10 @@
+apiVersion: argonix.io/v1alpha1
+kind: SREPatrol
+metadata:
+  name: platform-observation
+spec:
+  name: Platform observation
+  perspective: platform
+  cadenceMinutes: 15
+  autonomy: observe
+  isActive: false

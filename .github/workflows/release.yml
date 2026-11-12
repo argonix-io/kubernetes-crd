@@ -1,6 +1,12 @@
 name: Build & Push Docker Image
 
 on:
+  workflow_call:
+    inputs:
+      release-version:
+        description: Exact image version to publish before packaging the Helm chart
+        required: true
+        type: string
   push:
     tags:
       - "v*"
@@ -19,6 +25,12 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
+      - name: Validate requested image version
+        if: inputs.release-version != ''
+        env:
+          RELEASE_VERSION: ${{ inputs.release-version }}
+        run: |
+          [[ "$RELEASE_VERSION" =~ ^[0-9]+[.][0-9]+[.][0-9]+$ ]]
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -46,9 +58,11 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
             # On main push: latest
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=latest,enable=${{ inputs.release-version == '' && github.ref == 'refs/heads/main' }}
+            # Helm calls this job before publishing the chart or creating its git tag.
+            type=raw,value=${{ inputs.release-version }},enable=${{ inputs.release-version != '' }}
             # Always: sha-abc1234
-            type=sha,prefix=sha-
+            type=sha,prefix=sha-,enable=${{ inputs.release-version == '' }}
 
       - name: Build and push
         uses: docker/build-push-action@v5

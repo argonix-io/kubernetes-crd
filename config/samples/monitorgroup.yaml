@@ -1,0 +1,7 @@
+apiVersion: argonix.io/v1alpha1
+kind: MonitorGroup
+metadata:
+  name: production
+spec:
+  name: Production
+  description: Availability checks for production services

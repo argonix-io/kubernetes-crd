@@ -7,7 +7,7 @@ image:
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Overrides the image tag (defaults to appVersion)
-  tag: "latest"
+  tag: ""
 
 # -- Image pull secrets
 imagePullSecrets: []

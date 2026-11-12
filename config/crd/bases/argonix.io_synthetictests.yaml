@@ -52,6 +52,14 @@ spec:
           spec:
             description: SyntheticTestSpec defines the desired state of a SyntheticTest.
             properties:
+              allowMutatingActions:
+                description: AllowMutatingActions enables connector actions that modify
+                  systems. The API defaults to false.
+                type: boolean
+              applicationKey:
+                description: ApplicationKey associates the check with an inventory
+                  application UUID.
+                type: string
               checkInterval:
                 default: 300
                 description: CheckInterval is the number of seconds between checks.
@@ -60,6 +68,12 @@ spec:
               description:
                 description: Description is a description of the synthetic test.
                 type: string
+              inputVariables:
+                additionalProperties:
+                  x-kubernetes-preserve-unknown-fields: true
+                description: InputVariables provides default values for named scenario
+                  inputs.
+                type: object
               isActive:
                 default: true
                 description: IsActive indicates whether the synthetic test is enabled.
@@ -72,8 +86,32 @@ spec:
               name:
                 description: Name is the display name of the synthetic test.
                 type: string
+              resourceId:
+                description: ResourceID associates the check with an inventory resource
+                  UUID. Use an empty string to clear it.
+                type: string
+              runTimeout:
+                description: RunTimeout is the scenario timeout in seconds.
+                format: int64
+                maximum: 3600
+                minimum: 1
+                type: integer
+              schedule:
+                description: Schedule is the cron expression used in cron mode.
+                type: string
+              scheduleMode:
+                description: ScheduleMode selects manual, interval, or cron execution.
+                enum:
+                - manual
+                - interval
+                - cron
+                type: string
+              scheduleTimezone:
+                description: ScheduleTimezone is the IANA time zone for cron execution.
+                type: string
               steps:
                 description: Steps is a JSON-encoded array of step objects.
+                minLength: 2
                 type: string
               tags:
                 description: Tags is a list of tags.
@@ -81,10 +119,12 @@ spec:
                   type: string
                 type: array
               testType:
-                description: TestType is the type of synthetic test (api or browser).
+                description: TestType is the type of synthetic test (api, browser,
+                  or scenario).
                 enum:
                 - api
                 - browser
+                - scenario
                 type: string
               timeout:
                 default: 30
@@ -181,6 +221,16 @@ spec:
                 type: string
               id:
                 description: ID is the UUID of the synthetic test in the Argonix API.
+                type: string
+              lastRunAt:
+                description: LastRunAt is the most recent execution time.
+                type: string
+              lastWarningCount:
+                description: LastWarningCount is the warning count of the most recent
+                  execution.
+                type: integer
+              nextRunAt:
+                description: NextRunAt is the next scheduled execution time.
                 type: string
             type: object
         type: object

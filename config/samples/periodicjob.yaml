@@ -1,0 +1,12 @@
+apiVersion: argonix.io/v1alpha1
+kind: PeriodicJob
+metadata:
+  name: weekday-health-summary
+spec:
+  name: Weekday service health summary
+  prompt: Summarize recent availability changes and open incidents.
+  scheduleHour: 8
+  scheduleMinute: 30
+  scheduleDays: [0, 1, 2, 3, 4]
+  mode: discussion
+  isActive: false

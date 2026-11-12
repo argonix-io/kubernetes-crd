@@ -18,3 +18,18 @@ spec:
   # alertChannelIds: '["<alert-channel-uuid>"]'
   ticketingMinSeverity: critical
   ticketingAction: investigate
+---
+apiVersion: argonix.io/v1alpha1
+kind: HealthNotebook
+metadata:
+  name: weekly-security-brief
+spec:
+  name: Weekly security brief
+  reportKind: security
+  frequency: weekly
+  scheduleDays: "[0]"
+  scheduleHour: 8
+  lookbackHours: 168
+  useApplications: true
+  perspective: platform
+  isActive: false

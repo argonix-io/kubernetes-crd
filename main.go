@@ -110,6 +110,11 @@ func main() {
 		{"HealthNotebook", controller.SetupHealthNotebookReconciler},
 		{"Tenant", controller.SetupTenantReconciler},
 		{"CostBudget", controller.SetupCostBudgetReconciler},
+		{"PeriodicJob", controller.SetupPeriodicJobReconciler},
+		{"CodeProject", controller.SetupCodeProjectReconciler},
+		{"SREPatrol", controller.SetupSREPatrolReconciler},
+		{"MonitorGroup", controller.SetupMonitorGroupReconciler},
+		{"ScanTarget", controller.SetupScanTargetReconciler},
 	}
 
 	for _, sf := range setupFuncs {

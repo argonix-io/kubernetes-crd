@@ -1,0 +1,12 @@
+apiVersion: argonix.io/v1alpha1
+kind: CodeProject
+metadata:
+  name: example-service
+spec:
+  name: Example service
+  key: example-service
+  repositoryUrl: https://github.com/example/service
+  defaultBranch: main
+  enabledEngines: [opengrep, gitleaks]
+  webhookAnalysisMode: standard
+  excludedPaths: [vendor/**]
