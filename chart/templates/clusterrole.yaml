@@ -29,7 +29,12 @@ rules:
       - personas
       - securitypolicies
       - securityscans
+      - scantargets
       - detectionrules
+      - srepatrols
+      - monitorgroups
+      - periodicjobs
+      - codeprojects
       - healthnotebooks
       - tenants
       - costbudgets
@@ -65,7 +70,12 @@ rules:
       - personas/status
       - securitypolicies/status
       - securityscans/status
+      - scantargets/status
       - detectionrules/status
+      - srepatrols/status
+      - monitorgroups/status
+      - periodicjobs/status
+      - codeprojects/status
       - healthnotebooks/status
       - tenants/status
       - costbudgets/status
@@ -97,7 +107,12 @@ rules:
       - personas/finalizers
       - securitypolicies/finalizers
       - securityscans/finalizers
+      - scantargets/finalizers
       - detectionrules/finalizers
+      - srepatrols/finalizers
+      - monitorgroups/finalizers
+      - periodicjobs/finalizers
+      - codeprojects/finalizers
       - healthnotebooks/finalizers
       - tenants/finalizers
       - costbudgets/finalizers

@@ -15,7 +15,23 @@ func SetupHealthNotebookReconciler(mgr ctrl.Manager, ac *argonixclient.Client) e
 		ArgonixClient: ac,
 		NewObject:     func() *v1alpha1.HealthNotebook { return &v1alpha1.HealthNotebook{} },
 		Adapter: ResourceAdapter[*v1alpha1.HealthNotebook]{
-			APIEndpoint: "/argos/health-notebooks/",
+			APIEndpoint:     "/argos/health-notebooks/",
+			PatchDriftOnly:  true,
+			NormalizeRemote: normalizeArgosRelations,
+			ValidateSpec: func(obj *v1alpha1.HealthNotebook) error {
+				s := obj.Spec
+				for _, field := range []struct{ name, value string }{
+					{"scheduleDays", s.ScheduleDays},
+					{"connectorIds", s.ConnectorIDs},
+					{"notificationChannelIds", s.NotificationChannelIDs},
+					{"alertChannelIds", s.AlertChannelIDs},
+				} {
+					if err := validateJSONField(field.name, field.value, '['); err != nil {
+						return err
+					}
+				}
+				return nil
+			},
 			BuildPayload: func(obj *v1alpha1.HealthNotebook) map[string]interface{} {
 				s := obj.Spec
 				payload := map[string]interface{}{
@@ -35,13 +51,25 @@ func SetupHealthNotebookReconciler(mgr ctrl.Manager, ac *argonixclient.Client) e
 				if s.ScheduleDayOfMonth != 0 {
 					payload["schedule_day_of_month"] = s.ScheduleDayOfMonth
 				}
-				if s.TicketingMinSeverity != "" {
-					payload["ticketing_min_severity"] = s.TicketingMinSeverity
-				}
+				payload["ticketing_min_severity"] = s.TicketingMinSeverity
 				parseJSONStringField(s.ScheduleDays, "schedule_days", payload)
 				parseJSONStringField(s.ConnectorIDs, "connector_ids", payload)
 				parseJSONStringField(s.NotificationChannelIDs, "notification_channel_ids", payload)
 				parseJSONStringField(s.AlertChannelIDs, "alert_channel_ids", payload)
+				setOptional(payload, "report_kind", s.ReportKind)
+				setOptional(payload, "use_applications", s.UseApplications)
+				setOptional(payload, "perspective", s.Perspective)
+				setOptional(payload, "application_root_ids", s.ApplicationRootIDs)
+				setOptional(payload, "application_label_selector", s.ApplicationLabelSelector)
+				setOptional(payload, "include_unattributed", s.IncludeUnattributed)
+				setOptional(payload, "minimum_attribution_confidence", s.MinimumAttributionConfidence)
+				setOptional(payload, "lookback_hours", s.LookbackHours)
+				setOptional(payload, "include_log_anomalies", s.IncludeLogAnomalies)
+				setOptional(payload, "include_vulnerabilities", s.IncludeVulnerabilities)
+				setOptional(payload, "include_runtime", s.IncludeRuntime)
+				setOptional(payload, "include_dns", s.IncludeDNS)
+				setOptional(payload, "include_network", s.IncludeNetwork)
+				setOptional(payload, "include_operational_signals", s.IncludeOperationalSignals)
 				return payload
 			},
 			GetResourceID: func(obj *v1alpha1.HealthNotebook) string { return obj.Status.ID },

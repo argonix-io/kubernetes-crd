@@ -35,3 +35,17 @@ spec:
   inputHints: '{"namespace": {"description": "Kubernetes namespace of the pod", "example": "prod"}, "pod_name": {"description": "Name of the pod to restart", "example": "api-gateway-7d9f"}}'
   requiredConnectorTypes: '["kubernetes"]'
   requiresConfirmation: true
+---
+apiVersion: argonix.io/v1alpha1
+kind: Workflow
+metadata:
+  name: scheduled-observation
+spec:
+  name: Scheduled observation
+  slug: scheduled_observation
+  schedule: "0 9 * * 1"
+  scheduleTimezone: Europe/Paris
+  scheduleInputs:
+    namespace: production
+  steps: '[{"id":"pods","tool":"k8s.list_pods","params":{"namespace":"{{input.namespace}}"}}]'
+  isActive: false

@@ -7,8 +7,46 @@ on:
     paths:
       - 'chart/Chart.yaml'
 
+concurrency:
+  group: publish-operator-chart
+  cancel-in-progress: false
+
 jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      app-version: ${{ steps.versions.outputs.app-version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Validate chart and image versions
+        id: versions
+        run: |
+          set -euo pipefail
+          chart_version="$(awk '/^version:/ {print $2}' chart/Chart.yaml)"
+          app_version="$(awk '/^appVersion:/ {gsub(/"/, "", $2); print $2}' chart/Chart.yaml)"
+          [[ "$chart_version" =~ ^[0-9]+[.][0-9]+[.][0-9]+$ ]]
+          [[ "$app_version" =~ ^[0-9]+[.][0-9]+[.][0-9]+$ ]]
+          if git show-ref --verify --quiet "refs/tags/v$chart_version"; then
+            echo "Chart tag v$chart_version already exists." >&2
+            exit 1
+          fi
+          echo "app-version=$app_version" >> "$GITHUB_OUTPUT"
+
+  image:
+    needs: validate
+    uses: ./.github/workflows/release.yml
+    permissions:
+      contents: read
+      packages: write
+    with:
+      release-version: ${{ needs.validate.outputs.app-version }}
+
   release:
+    needs: image
     runs-on: ubuntu-latest
     permissions:
       contents: write

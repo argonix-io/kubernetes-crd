@@ -1,9 +1,11 @@
 package controller
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
+	"sort"
 	"time"
 
 	"k8s.io/apimachinery/pkg/api/equality"
@@ -30,6 +32,15 @@ type ResourceAdapter[T client.Object] struct {
 
 	// BuildPayload converts the K8s spec into an API request payload.
 	BuildPayload func(obj T) map[string]interface{}
+
+	// ValidateSpec rejects malformed fields before sending a request.
+	ValidateSpec func(obj T) error
+
+	// NormalizeRemote reconciles API read and write representations before comparison.
+	NormalizeRemote func(desired, remote map[string]interface{})
+
+	// PatchDriftOnly avoids rewriting fields with API side effects.
+	PatchDriftOnly bool
 
 	// GetResourceID returns the remote resource ID from the status.
 	GetResourceID func(obj T) string
@@ -80,8 +91,9 @@ func (r *ResourceReconciler[T]) Reconcile(ctx context.Context, req ctrl.Request)
 				}
 				logger.Info("Deleted remote resource", "id", resourceID)
 			}
+			before := obj.DeepCopyObject().(T)
 			controllerutil.RemoveFinalizer(obj, finalizerName)
-			if err := r.Update(ctx, obj); err != nil {
+			if err := r.Patch(ctx, obj, client.MergeFrom(before)); err != nil {
 				return ctrl.Result{}, err
 			}
 		}
@@ -90,11 +102,20 @@ func (r *ResourceReconciler[T]) Reconcile(ctx context.Context, req ctrl.Request)
 
 	// Ensure finalizer.
 	if !controllerutil.ContainsFinalizer(obj, finalizerName) {
+		before := obj.DeepCopyObject().(T)
 		controllerutil.AddFinalizer(obj, finalizerName)
-		if err := r.Update(ctx, obj); err != nil {
+		if err := r.Patch(ctx, obj, client.MergeFrom(before)); err != nil {
 			return ctrl.Result{}, err
 		}
 		return ctrl.Result{}, nil
+	}
+
+	if r.Adapter.ValidateSpec != nil {
+		if err := r.Adapter.ValidateSpec(obj); err != nil {
+			r.setCondition(obj, "Synced", metav1.ConditionFalse, "InvalidSpec", err.Error())
+			_ = r.Status().Update(ctx, obj)
+			return ctrl.Result{}, err
+		}
 	}
 
 	resourceID := r.Adapter.GetResourceID(obj)
@@ -148,8 +169,14 @@ func (r *ResourceReconciler[T]) Reconcile(ctx context.Context, req ctrl.Request)
 		return ctrl.Result{}, err
 	}
 
+	if r.Adapter.NormalizeRemote != nil {
+		r.Adapter.NormalizeRemote(payload, remote)
+	}
 	// Update if drift detected.
-	if !r.payloadMatchesRemote(payload, remote) {
+	if changes := driftedFields(payload, remote); len(changes) != 0 {
+		if r.Adapter.PatchDriftOnly {
+			payload = changes
+		}
 		var resp map[string]interface{}
 		if err := r.ArgonixClient.Update(ctx, r.Adapter.APIEndpoint+resourceID+"/", payload, &resp); err != nil {
 			r.setCondition(obj, "Synced", metav1.ConditionFalse, "UpdateFailed", err.Error())
@@ -163,27 +190,109 @@ func (r *ResourceReconciler[T]) Reconcile(ctx context.Context, req ctrl.Request)
 			return ctrl.Result{}, err
 		}
 		logger.Info("Updated remote resource", "id", resourceID)
+	} else {
+		before := obj.DeepCopyObject()
+		r.Adapter.SetStatusFromResponse(obj, remote)
+		for _, condition := range r.Adapter.GetConditions(obj) {
+			if (condition.Type == "Synced" || condition.Type == "Ready") && condition.Status != metav1.ConditionTrue {
+				r.setCondition(obj, condition.Type, metav1.ConditionTrue, "Synced", "Resource in sync")
+			}
+		}
+		if !equality.Semantic.DeepEqual(before, obj) {
+			if err := r.Status().Update(ctx, obj); err != nil {
+				return ctrl.Result{}, err
+			}
+		}
 	}
 
 	return ctrl.Result{RequeueAfter: requeueInterval}, nil
 }
 
-func (r *ResourceReconciler[T]) payloadMatchesRemote(payload map[string]interface{}, remote map[string]interface{}) bool {
+func driftedFields(payload, remote map[string]interface{}) map[string]interface{} {
+	changes := make(map[string]interface{})
 	for key, desired := range payload {
 		actual, exists := remote[key]
-		if !exists {
-			return false
-		}
-		if !equality.Semantic.DeepEqual(desired, actual) {
-			// Try JSON comparison for complex types.
-			desiredJSON, err1 := json.Marshal(desired)
-			actualJSON, err2 := json.Marshal(actual)
-			if err1 != nil || err2 != nil || string(desiredJSON) != string(actualJSON) {
-				return false
-			}
+		desiredJSON, desiredErr := json.Marshal(desired)
+		actualJSON, actualErr := json.Marshal(actual)
+		if !exists || desiredErr != nil || actualErr != nil || !bytes.Equal(desiredJSON, actualJSON) {
+			changes[key] = desired
 		}
 	}
-	return true
+	return changes
+}
+
+// normalizeIDList compares unordered API relations that may use nested objects on reads.
+func normalizeIDList(desired, remote map[string]interface{}, writeKey, readKey string) {
+	if _, managed := desired[writeKey]; !managed {
+		return
+	}
+	rows, ok := remote[readKey].([]interface{})
+	if !ok {
+		return
+	}
+	actual := make([]string, 0, len(rows))
+	for _, row := range rows {
+		if object, nested := row.(map[string]interface{}); nested {
+			row = object["id"]
+		}
+		id, ok := row.(string)
+		if !ok {
+			return
+		}
+		actual = append(actual, id)
+	}
+	var expected []string
+	encoded, err := json.Marshal(desired[writeKey])
+	if err != nil || json.Unmarshal(encoded, &expected) != nil {
+		return
+	}
+	sort.Strings(actual)
+	sort.Strings(expected)
+	if len(actual) == len(expected) {
+		for i := range actual {
+			if actual[i] != expected[i] {
+				return
+			}
+		}
+		remote[writeKey] = desired[writeKey]
+	}
+}
+
+func normalizeArgosRelations(desired, remote map[string]interface{}) {
+	normalizeIDList(desired, remote, "connector_ids", "connectors")
+	normalizeIDList(desired, remote, "notification_channel_ids", "notification_channels")
+	normalizeIDList(desired, remote, "alert_channel_ids", "alert_channels")
+	normalizeIDList(desired, remote, "application_root_ids", "application_root_ids")
+}
+
+// setOptional leaves API fields unmanaged when the manifest omits them.
+func setOptional[V any](payload map[string]interface{}, key string, value *V) {
+	if value != nil {
+		payload[key] = *value
+	}
+}
+
+// setNullableID translates an explicit empty ID into an API null.
+func setNullableID(payload map[string]interface{}, key string, value *string) {
+	if value == nil {
+		return
+	}
+	if *value == "" {
+		payload[key] = nil
+	} else {
+		payload[key] = *value
+	}
+}
+
+func validateJSONField(field, value string, delimiter byte) error {
+	if value == "" {
+		return nil
+	}
+	data := bytes.TrimSpace([]byte(value))
+	if !json.Valid(data) || data[0] != delimiter {
+		return fmt.Errorf("%s must be a JSON %s", field, map[byte]string{'[': "array", '{': "object"}[delimiter])
+	}
+	return nil
 }
 
 func (r *ResourceReconciler[T]) setCondition(obj T, condType string, status metav1.ConditionStatus, reason, message string) {
@@ -226,7 +335,7 @@ func sliceToJSON(s []string) string {
 }
 
 func getString(m map[string]interface{}, key string) string {
-	if v, ok := m[key]; ok {
+	if v, ok := m[key]; ok && v != nil {
 		if s, ok := v.(string); ok {
 			return s
 		}

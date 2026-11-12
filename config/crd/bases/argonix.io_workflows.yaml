@@ -63,6 +63,62 @@ spec:
               description:
                 description: Description is a description of the workflow.
                 type: string
+              extractInputsWithAI:
+                description: ExtractInputsWithAI allows input extraction from free
+                  text.
+                type: boolean
+              incidentAllowedConnectorTypes:
+                description: IncidentAllowedConnectorTypes lists explicitly approved
+                  incident connector types.
+                items:
+                  type: string
+                type: array
+              incidentAllowedEnvironments:
+                description: IncidentAllowedEnvironments lists permitted incident
+                  environments.
+                items:
+                  type: string
+                type: array
+              incidentAllowedTools:
+                description: IncidentAllowedTools lists explicitly approved incident
+                  tools.
+                items:
+                  type: string
+                type: array
+              incidentAutonomy:
+                description: IncidentAutonomy sets the approved incident response
+                  mode.
+                type: string
+              incidentMaxAffectedResources:
+                description: IncidentMaxAffectedResources limits the incident blast
+                  radius.
+                type: integer
+              incidentMinConfidence:
+                description: IncidentMinConfidence is the minimum incident confidence
+                  percentage.
+                type: integer
+              incidentMinSeverity:
+                description: IncidentMinSeverity is the minimum incident severity.
+                type: string
+              incidentRequireCompensation:
+                description: IncidentRequireCompensation requires a compensation step
+                  for mutations.
+                type: boolean
+              incidentRequireVerification:
+                description: IncidentRequireVerification requires verification after
+                  incident actions.
+                type: boolean
+              incidentStopOnAmbiguousInput:
+                description: IncidentStopOnAmbiguousInput stops the workflow on ambiguous
+                  incident input.
+                type: boolean
+              incidentTimeoutMinutes:
+                description: IncidentTimeoutMinutes limits the duration of an incident
+                  run.
+                type: integer
+              incidentTrigger:
+                description: IncidentTrigger selects the incident lifecycle trigger.
+                type: string
               inputHints:
                 description: |-
                   InputHints is a JSON-encoded map annotating each {{input.x}} referenced
@@ -88,6 +144,27 @@ spec:
                 type: boolean
               schedule:
                 description: Schedule is a cron expression for scheduled execution.
+                type: string
+              scheduleInputs:
+                additionalProperties:
+                  x-kubernetes-preserve-unknown-fields: true
+                description: ScheduleInputs provides values for scheduled workflow
+                  inputs.
+                type: object
+              scheduleTimezone:
+                description: ScheduleTimezone is the IANA time zone for cron execution.
+                type: string
+              securityDetectionRule:
+                description: SecurityDetectionRule scopes the trigger to a detection
+                  rule UUID. Use an empty string to clear it.
+                type: string
+              securityMinSeverity:
+                description: SecurityMinSeverity is the minimum severity for a security
+                  trigger.
+                type: string
+              securityTrigger:
+                description: SecurityTrigger selects when a security event should
+                  run the workflow.
                 type: string
               slug:
                 description: Slug is a URL-friendly identifier.
@@ -180,6 +257,12 @@ spec:
                 type: string
               id:
                 description: ID is the UUID of the workflow in the Argonix API.
+                type: string
+              scheduleLastRunAt:
+                description: ScheduleLastRunAt is the last scheduled execution time.
+                type: string
+              scheduleNextRunAt:
+                description: ScheduleNextRunAt is the next scheduled execution time.
                 type: string
             type: object
         type: object

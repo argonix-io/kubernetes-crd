@@ -62,6 +62,28 @@ spec:
                 description: AlertChannelIDs is a JSON-encoded list of alert channel
                   UUIDs.
                 type: string
+              applicationLabelSelector:
+                description: ApplicationLabelSelector selects applications matching
+                  all supplied labels.
+                items:
+                  description: ApplicationLabel is an exact inventory application
+                    label match.
+                  properties:
+                    key:
+                      type: string
+                    value:
+                      type: string
+                  required:
+                  - key
+                  - value
+                  type: object
+                type: array
+              applicationRootIds:
+                description: ApplicationRootIDs selects inventory applications by
+                  UUID.
+                items:
+                  type: string
+                type: array
               connectorIds:
                 description: |-
                   ConnectorIDs is a JSON-encoded list of connector UUIDs to scope the report.
@@ -82,6 +104,9 @@ spec:
                 default: true
                 description: IncludeCost includes FinOps cost anomalies in the report.
                 type: boolean
+              includeDNS:
+                description: IncludeDNS includes DNS signals in the report.
+                type: boolean
               includeFindings:
                 default: true
                 description: IncludeFindings includes security findings in the report.
@@ -90,25 +115,71 @@ spec:
                 default: true
                 description: IncludeIncidents includes incidents in the report.
                 type: boolean
+              includeLogAnomalies:
+                description: IncludeLogAnomalies includes log anomalies in the report.
+                type: boolean
               includeMonitors:
                 default: true
                 description: IncludeMonitors includes monitor/uptime status in the
                   report.
                 type: boolean
+              includeNetwork:
+                description: IncludeNetwork includes network signals in the report.
+                type: boolean
+              includeOperationalSignals:
+                description: IncludeOperationalSignals includes normalized operational
+                  signals in the report.
+                type: boolean
+              includeRuntime:
+                description: IncludeRuntime includes runtime signals in the report.
+                type: boolean
               includeThreats:
                 default: true
                 description: IncludeThreats includes threat detections in the report.
+                type: boolean
+              includeUnattributed:
+                description: IncludeUnattributed includes signals without an application
+                  attribution.
+                type: boolean
+              includeVulnerabilities:
+                description: IncludeVulnerabilities includes vulnerabilities in the
+                  report.
                 type: boolean
               isActive:
                 default: true
                 description: IsActive indicates whether the notebook runs on its schedule.
                 type: boolean
+              lookbackHours:
+                description: LookbackHours defines the evidence window in hours.
+                maximum: 168
+                minimum: 1
+                type: integer
+              minimumAttributionConfidence:
+                description: MinimumAttributionConfidence sets the minimum attribution
+                  confidence percentage.
+                maximum: 100
+                minimum: 0
+                type: integer
               name:
                 description: Name is the display name of the health notebook.
                 type: string
               notificationChannelIds:
                 description: NotificationChannelIDs is a JSON-encoded list of chat
                   channel UUIDs.
+                type: string
+              perspective:
+                description: Perspective selects the application perspective.
+                enum:
+                - all
+                - business
+                - platform
+                type: string
+              reportKind:
+                description: ReportKind selects a health report or a read-only security
+                  brief.
+                enum:
+                - health
+                - security
                 type: string
               scheduleDayOfMonth:
                 description: ScheduleDayOfMonth is the day of month (1-31) for the
@@ -149,6 +220,9 @@ spec:
                 - error
                 - critical
                 type: string
+              useApplications:
+                description: UseApplications enables application-based scoping.
+                type: boolean
             required:
             - name
             type: object

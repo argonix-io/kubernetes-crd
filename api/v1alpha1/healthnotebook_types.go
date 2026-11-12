@@ -95,6 +95,74 @@ type HealthNotebookSpec struct {
 	// +kubebuilder:default=none
 	// +optional
 	TicketingAction string `json:"ticketingAction,omitempty"`
+
+	// ReportKind selects a health report or a read-only security brief.
+	// +kubebuilder:validation:Enum=health;security
+	// +optional
+	ReportKind *string `json:"reportKind,omitempty"`
+
+	// UseApplications enables application-based scoping.
+	// +optional
+	UseApplications *bool `json:"useApplications,omitempty"`
+
+	// Perspective selects the application perspective.
+	// +kubebuilder:validation:Enum=all;business;platform
+	// +optional
+	Perspective *string `json:"perspective,omitempty"`
+
+	// ApplicationRootIDs selects inventory applications by UUID.
+	// +optional
+	ApplicationRootIDs *[]string `json:"applicationRootIds,omitempty"`
+
+	// ApplicationLabelSelector selects applications matching all supplied labels.
+	// +optional
+	ApplicationLabelSelector *[]ApplicationLabel `json:"applicationLabelSelector,omitempty"`
+
+	// IncludeUnattributed includes signals without an application attribution.
+	// +optional
+	IncludeUnattributed *bool `json:"includeUnattributed,omitempty"`
+
+	// MinimumAttributionConfidence sets the minimum attribution confidence percentage.
+	// +kubebuilder:validation:Minimum=0
+	// +kubebuilder:validation:Maximum=100
+	// +optional
+	MinimumAttributionConfidence *int `json:"minimumAttributionConfidence,omitempty"`
+
+	// LookbackHours defines the evidence window in hours.
+	// +kubebuilder:validation:Minimum=1
+	// +kubebuilder:validation:Maximum=168
+	// +optional
+	LookbackHours *int `json:"lookbackHours,omitempty"`
+
+	// IncludeLogAnomalies includes log anomalies in the report.
+	// +optional
+	IncludeLogAnomalies *bool `json:"includeLogAnomalies,omitempty"`
+
+	// IncludeVulnerabilities includes vulnerabilities in the report.
+	// +optional
+	IncludeVulnerabilities *bool `json:"includeVulnerabilities,omitempty"`
+
+	// IncludeRuntime includes runtime signals in the report.
+	// +optional
+	IncludeRuntime *bool `json:"includeRuntime,omitempty"`
+
+	// IncludeDNS includes DNS signals in the report.
+	// +optional
+	IncludeDNS *bool `json:"includeDNS,omitempty"`
+
+	// IncludeNetwork includes network signals in the report.
+	// +optional
+	IncludeNetwork *bool `json:"includeNetwork,omitempty"`
+
+	// IncludeOperationalSignals includes normalized operational signals in the report.
+	// +optional
+	IncludeOperationalSignals *bool `json:"includeOperationalSignals,omitempty"`
+}
+
+// ApplicationLabel is an exact inventory application label match.
+type ApplicationLabel struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
 }
 
 // HealthNotebookStatus defines the observed state of a HealthNotebook.

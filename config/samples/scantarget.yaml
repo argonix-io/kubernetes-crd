@@ -1,0 +1,15 @@
+apiVersion: argonix.io/v1alpha1
+kind: ScanTarget
+metadata:
+  name: example-service-image
+spec:
+  name: Example service image
+  kind: image
+  identifier: ghcr.io/example/service
+  defaultRef: v1.2.3
+  platform: linux/amd64
+  enabledScanners: [trivy, syft]
+  frequency: weekly
+  scheduleHour: 3
+  scheduleDays: [0]
+  isActive: false

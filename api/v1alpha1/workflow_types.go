@@ -1,6 +1,7 @@
 package v1alpha1
 
 import (
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -52,6 +53,78 @@ type WorkflowSpec struct {
 	// +kubebuilder:default=true
 	// +optional
 	IsActive bool `json:"isActive,omitempty"`
+
+	// ExtractInputsWithAI allows input extraction from free text.
+	// +optional
+	ExtractInputsWithAI *bool `json:"extractInputsWithAI,omitempty"`
+
+	// ScheduleTimezone is the IANA time zone for cron execution.
+	// +optional
+	ScheduleTimezone *string `json:"scheduleTimezone,omitempty"`
+
+	// ScheduleInputs provides values for scheduled workflow inputs.
+	// +optional
+	ScheduleInputs *map[string]apiextensionsv1.JSON `json:"scheduleInputs,omitempty"`
+
+	// SecurityTrigger selects when a security event should run the workflow.
+	// +optional
+	SecurityTrigger *string `json:"securityTrigger,omitempty"`
+
+	// SecurityMinSeverity is the minimum severity for a security trigger.
+	// +optional
+	SecurityMinSeverity *string `json:"securityMinSeverity,omitempty"`
+
+	// SecurityDetectionRule scopes the trigger to a detection rule UUID. Use an empty string to clear it.
+	// +optional
+	SecurityDetectionRule *string `json:"securityDetectionRule,omitempty"`
+
+	// IncidentTrigger selects the incident lifecycle trigger.
+	// +optional
+	IncidentTrigger *string `json:"incidentTrigger,omitempty"`
+
+	// IncidentAutonomy sets the approved incident response mode.
+	// +optional
+	IncidentAutonomy *string `json:"incidentAutonomy,omitempty"`
+
+	// IncidentMinSeverity is the minimum incident severity.
+	// +optional
+	IncidentMinSeverity *string `json:"incidentMinSeverity,omitempty"`
+
+	// IncidentMinConfidence is the minimum incident confidence percentage.
+	// +optional
+	IncidentMinConfidence *int `json:"incidentMinConfidence,omitempty"`
+
+	// IncidentMaxAffectedResources limits the incident blast radius.
+	// +optional
+	IncidentMaxAffectedResources *int `json:"incidentMaxAffectedResources,omitempty"`
+
+	// IncidentAllowedEnvironments lists permitted incident environments.
+	// +optional
+	IncidentAllowedEnvironments *[]string `json:"incidentAllowedEnvironments,omitempty"`
+
+	// IncidentAllowedTools lists explicitly approved incident tools.
+	// +optional
+	IncidentAllowedTools *[]string `json:"incidentAllowedTools,omitempty"`
+
+	// IncidentAllowedConnectorTypes lists explicitly approved incident connector types.
+	// +optional
+	IncidentAllowedConnectorTypes *[]string `json:"incidentAllowedConnectorTypes,omitempty"`
+
+	// IncidentRequireCompensation requires a compensation step for mutations.
+	// +optional
+	IncidentRequireCompensation *bool `json:"incidentRequireCompensation,omitempty"`
+
+	// IncidentRequireVerification requires verification after incident actions.
+	// +optional
+	IncidentRequireVerification *bool `json:"incidentRequireVerification,omitempty"`
+
+	// IncidentStopOnAmbiguousInput stops the workflow on ambiguous incident input.
+	// +optional
+	IncidentStopOnAmbiguousInput *bool `json:"incidentStopOnAmbiguousInput,omitempty"`
+
+	// IncidentTimeoutMinutes limits the duration of an incident run.
+	// +optional
+	IncidentTimeoutMinutes *int `json:"incidentTimeoutMinutes,omitempty"`
 }
 
 // WorkflowStatus defines the observed state of a Workflow.
@@ -67,6 +140,14 @@ type WorkflowStatus struct {
 
 	// Conditions represent the latest available observations of the resource's state.
 	Conditions []metav1.Condition `json:"conditions,omitempty"`
+
+	// ScheduleLastRunAt is the last scheduled execution time.
+	// +optional
+	ScheduleLastRunAt string `json:"scheduleLastRunAt,omitempty"`
+
+	// ScheduleNextRunAt is the next scheduled execution time.
+	// +optional
+	ScheduleNextRunAt string `json:"scheduleNextRunAt,omitempty"`
 }
 
 // +kubebuilder:object:root=true

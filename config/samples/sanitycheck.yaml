@@ -1,0 +1,13 @@
+apiVersion: argonix.io/v1alpha1
+kind: SyntheticTest
+metadata:
+  name: example-health-check
+spec:
+  name: Example endpoint sanity check
+  testType: scenario
+  scheduleMode: manual
+  inputVariables:
+    endpoint: https://example.com
+  allowMutatingActions: false
+  steps: >-
+    [{"id":"health","kind":"http","params":{"url":"{{input.endpoint}}"},"assertions":[{"path":"status_code","operator":"eq","value":200}]}]

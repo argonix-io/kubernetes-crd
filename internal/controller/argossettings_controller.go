@@ -5,10 +5,13 @@ import (
 	"fmt"
 
 	corev1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/equality"
+	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	k8stypes "k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
 	k8sclient "sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/predicate"
 
 	v1alpha1 "github.com/argonix-io/kubernetes-crd/api/v1alpha1"
 	argonixclient "github.com/argonix-io/kubernetes-crd/internal/client"
@@ -17,16 +20,19 @@ import (
 func SetupArgosSettingsReconciler(mgr ctrl.Manager, ac *argonixclient.Client) error {
 	r := &argosSettingsReconciler{
 		Client:        mgr.GetClient(),
+		SecretReader:  mgr.GetAPIReader(),
 		ArgonixClient: ac,
 	}
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&v1alpha1.ArgosSettings{}).
+		WithEventFilter(predicate.GenerationChangedPredicate{}).
 		Named("argossettings").
 		Complete(r)
 }
 
 type argosSettingsReconciler struct {
 	Client        k8sclient.Client
+	SecretReader  k8sclient.Reader
 	ArgonixClient *argonixclient.Client
 }
 
@@ -55,7 +61,7 @@ func (r *argosSettingsReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 			key = "api-key"
 		}
 		var secret corev1.Secret
-		if err := r.Client.Get(ctx, k8stypes.NamespacedName{
+		if err := r.SecretReader.Get(ctx, k8stypes.NamespacedName{
 			Namespace: obj.Namespace,
 			Name:      obj.Spec.LLMApiKeySecretRef.Name,
 		}, &secret); err != nil {
@@ -79,29 +85,32 @@ func (r *argosSettingsReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 	}
 	settingsID, _ := existing["id"].(string)
 
-	// Update via PATCH
-	var result map[string]interface{}
-	if err := r.ArgonixClient.Update(ctx, fmt.Sprintf("/argos/settings/%s/", settingsID), payload, &result); err != nil {
-		log.Error(err, "Failed to update argos settings")
-		return ctrl.Result{}, err
+	settings := existing
+	if changes := driftedFields(payload, existing); len(changes) > 0 {
+		var result map[string]interface{}
+		if err := r.ArgonixClient.Update(ctx, fmt.Sprintf("/argos/settings/%s/", settingsID), changes, &result); err != nil {
+			log.Error(err, "Failed to update argos settings")
+			return ctrl.Result{}, err
+		}
+		settings = result
 	}
 
-	// Update status
+	before := obj.DeepCopy()
 	obj.Status.ID = settingsID
-	obj.Status.DateModified = getString(result, "date_modified")
-	obj.Status.Conditions = []metav1.Condition{
-		{
-			Type:               "Ready",
-			Status:             metav1.ConditionTrue,
-			LastTransitionTime: metav1.Now(),
-			Reason:             "Synced",
-			Message:            "Settings synced to Argonix API",
-		},
-	}
-	if err := r.Client.Status().Update(ctx, &obj); err != nil {
-		log.Error(err, "Failed to update status")
-		return ctrl.Result{}, err
+	obj.Status.DateModified = getString(settings, "date_modified")
+	meta.SetStatusCondition(&obj.Status.Conditions, metav1.Condition{
+		Type:               "Ready",
+		Status:             metav1.ConditionTrue,
+		ObservedGeneration: obj.Generation,
+		Reason:             "Synced",
+		Message:            "Settings synced to Argonix API",
+	})
+	if !equality.Semantic.DeepEqual(before.Status, obj.Status) {
+		if err := r.Client.Status().Update(ctx, &obj); err != nil {
+			log.Error(err, "Failed to update status")
+			return ctrl.Result{}, err
+		}
 	}
 
-	return ctrl.Result{}, nil
+	return ctrl.Result{RequeueAfter: requeueInterval}, nil
 }
