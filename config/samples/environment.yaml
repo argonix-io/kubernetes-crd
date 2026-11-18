@@ -1,0 +1,20 @@
+apiVersion: argonix.io/v1alpha1
+kind: Environment
+metadata:
+  name: example-staging
+spec:
+  name: "Staging"
+  variables:
+    BASE_URL: "https://staging.example.com"
+    API_TOKEN: "staging-token"
+---
+apiVersion: argonix.io/v1alpha1
+kind: Environment
+metadata:
+  name: example-production
+spec:
+  name: "Production"
+  isDefault: true
+  variables:
+    BASE_URL: "https://api.example.com"
+    API_TOKEN: "prod-token"

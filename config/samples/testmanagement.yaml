@@ -1,0 +1,41 @@
+apiVersion: argonix.io/v1alpha1
+kind: ManualTestCase
+metadata:
+  name: example-manual-test
+spec:
+  title: "Login Flow Test"
+  description: "Verify the login flow works correctly"
+  preconditions: "User account must exist"
+  priority: high
+  steps:
+    - description: "Navigate to login page"
+      expected: "Login form is displayed"
+    - description: "Enter valid credentials and click Login"
+      expected: "User is redirected to dashboard"
+    - description: "Verify user name is displayed in header"
+      expected: "User name appears in top-right corner"
+  tags:
+    - authentication
+    - smoke
+---
+apiVersion: argonix.io/v1alpha1
+kind: TestSuite
+metadata:
+  name: example-test-suite
+spec:
+  name: "Authentication Suite"
+  description: "All authentication-related tests"
+  tags:
+    - auth
+---
+apiVersion: argonix.io/v1alpha1
+kind: TestPlan
+metadata:
+  name: example-test-plan
+spec:
+  name: "Q1 2024 Release"
+  description: "Test plan for Q1 release"
+  endDate: "2024-03-31"
+  tags:
+    - release
+    - q1

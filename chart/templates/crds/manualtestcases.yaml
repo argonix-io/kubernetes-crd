@@ -1,0 +1,107 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: manualtestcases.argonix.io
+  labels:
+    {{- include "argonix-crd.labels" . | nindent 4 }}
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.15.0
+spec:
+  group: argonix.io
+  names:
+    kind: ManualTestCase
+    listKind: ManualTestCaseList
+    plural: manualtestcases
+    singular: manualtestcase
+  scope: Namespaced
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      additionalPrinterColumns:
+        - name: Priority
+          type: string
+          jsonPath: .spec.priority
+        - name: Age
+          type: date
+          jsonPath: .metadata.creationTimestamp
+      subresources:
+        status: {}
+      schema:
+        openAPIV3Schema:
+          type: object
+          description: ManualTestCase is the Schema for the manualtestcases API.
+          properties:
+            apiVersion:
+              type: string
+            kind:
+              type: string
+            metadata:
+              type: object
+            spec:
+              type: object
+              required:
+                - title
+                - steps
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                preconditions:
+                  type: string
+                steps:
+                  type: array
+                  minItems: 1
+                  items:
+                    type: object
+                    required:
+                      - description
+                      - expected
+                    properties:
+                      description:
+                        type: string
+                      expected:
+                        type: string
+                priority:
+                  type: string
+                  default: "medium"
+                  enum: [critical, high, medium, low]
+                tags:
+                  type: array
+                  items:
+                    type: string
+            status:
+              type: object
+              properties:
+                id:
+                  type: string
+                dateCreated:
+                  type: string
+                dateModified:
+                  type: string
+                conditions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      lastTransitionTime:
+                        type: string
+                        format: date-time
+                      message:
+                        type: string
+                      observedGeneration:
+                        type: integer
+                        format: int64
+                      reason:
+                        type: string
+                      status:
+                        type: string
+                      type:
+                        type: string
+                    required:
+                      - lastTransitionTime
+                      - message
+                      - reason
+                      - status
+                      - type

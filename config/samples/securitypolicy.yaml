@@ -1,0 +1,17 @@
+apiVersion: argonix.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: production-gate
+spec:
+  name: "Production Deployment Gate"
+  environment: production
+  rules: '{"max_critical": 0, "max_high": 0, "scan_max_age_hours": 24, "required_scan_types": ["trivy", "gitleaks", "semgrep"]}'
+---
+apiVersion: argonix.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: staging-gate
+spec:
+  name: "Staging Deployment Gate"
+  environment: staging
+  rules: '{"max_critical": 0, "max_high": 10, "scan_max_age_hours": 72, "required_scan_types": ["trivy"]}'

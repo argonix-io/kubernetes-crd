@@ -1,0 +1,11 @@
+apiVersion: argonix.io/v1alpha1
+kind: Tenant
+metadata:
+  name: platform-team
+spec:
+  name: "Platform Team"
+  kind: team
+  color: "#6366f1"
+  monthlyBudget: "3000.00"
+  contactEmail: platform@example.com
+  description: "Shared platform and infrastructure costs"

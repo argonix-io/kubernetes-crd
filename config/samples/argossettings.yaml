@@ -1,0 +1,30 @@
+apiVersion: argonix.io/v1alpha1
+kind: ArgosSettings
+metadata:
+  name: argos-settings
+spec:
+  # LLM provider: local, google, anthropic, openai
+  llmProvider: local
+
+  # Custom model name (optional — blank uses provider default)
+  llmModel: "qwen3.5:32b"
+
+  # Point to your own Ollama instance
+  llmBaseURL: "http://ollama.production:11434/v1"
+
+  # Or bring your own API key via a Kubernetes Secret
+  # llmApiKeySecretRef:
+  #   name: argos-llm-secret
+  #   key: api-key
+
+  customInstructions: "Always respond in English. Follow runbook procedures before any remediation."
+  demoMode: false
+---
+# Example: Secret for a custom API key
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: argos-llm-secret
+# type: Opaque
+# stringData:
+#   api-key: "sk-your-api-key-here"

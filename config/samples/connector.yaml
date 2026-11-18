@@ -1,0 +1,26 @@
+apiVersion: argonix.io/v1alpha1
+kind: Connector
+metadata:
+  name: example-slack-connector
+spec:
+  name: "Slack"
+  connectorType: slack
+  config: '{"token": "xoxb-xxx-yyy-zzz"}'
+---
+apiVersion: argonix.io/v1alpha1
+kind: Connector
+metadata:
+  name: example-datadog-connector
+spec:
+  name: "Datadog"
+  connectorType: datadog
+  config: '{"api_key": "xxx", "app_key": "yyy"}'
+---
+apiVersion: argonix.io/v1alpha1
+kind: Connector
+metadata:
+  name: example-jira-connector
+spec:
+  name: "Jira"
+  connectorType: jira
+  config: '{"url": "https://company.atlassian.net", "email": "bot@company.com", "api_token": "xxx"}'

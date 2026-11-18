@@ -1,0 +1,122 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: notificationrules.argonix.io
+  labels:
+    {{- include "argonix-crd.labels" . | nindent 4 }}
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.15.0
+spec:
+  group: argonix.io
+  names:
+    kind: NotificationRule
+    listKind: NotificationRuleList
+    plural: notificationrules
+    singular: notificationrule
+  scope: Namespaced
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      additionalPrinterColumns:
+        - name: Trigger
+          type: string
+          jsonPath: .spec.triggerCondition
+        - name: Active
+          type: boolean
+          jsonPath: .spec.isActive
+        - name: Age
+          type: date
+          jsonPath: .metadata.creationTimestamp
+      subresources:
+        status: {}
+      schema:
+        openAPIV3Schema:
+          type: object
+          description: NotificationRule is the Schema for the notificationrules API.
+          properties:
+            apiVersion:
+              type: string
+            kind:
+              type: string
+            metadata:
+              type: object
+            spec:
+              type: object
+              required:
+                - name
+                - triggerCondition
+                - channels
+              properties:
+                name:
+                  type: string
+                isActive:
+                  type: boolean
+                  default: true
+                triggerCondition:
+                  type: string
+                  enum: [status_change, goes_down, goes_up, degraded, ssl_expiry, test_failing, test_passing, test_run_complete]
+                consecutiveFailures:
+                  type: integer
+                  format: int64
+                  default: 1
+                cooldownMinutes:
+                  type: integer
+                  format: int64
+                  default: 5
+                allMonitors:
+                  type: boolean
+                  default: false
+                allSyntheticTests:
+                  type: boolean
+                  default: false
+                monitorTags:
+                  type: array
+                  items:
+                    type: string
+                monitors:
+                  type: array
+                  items:
+                    type: string
+                syntheticTests:
+                  type: array
+                  items:
+                    type: string
+                channels:
+                  type: array
+                  items:
+                    type: string
+            status:
+              type: object
+              properties:
+                id:
+                  type: string
+                dateCreated:
+                  type: string
+                dateModified:
+                  type: string
+                conditions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      lastTransitionTime:
+                        type: string
+                        format: date-time
+                      message:
+                        type: string
+                      observedGeneration:
+                        type: integer
+                        format: int64
+                      reason:
+                        type: string
+                      status:
+                        type: string
+                      type:
+                        type: string
+                    required:
+                      - lastTransitionTime
+                      - message
+                      - reason
+                      - status
+                      - type

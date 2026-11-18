@@ -1,0 +1,141 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "argonix-crd.fullname" . }}-manager
+  labels:
+    {{- include "argonix-crd.labels" . | nindent 4 }}
+rules:
+  # Argonix CRD resources
+  - apiGroups:
+      - argonix.io
+    resources:
+      - monitors
+      - synthetictests
+      - groups
+      - notificationrules
+      - alertchannels
+      - statuspages
+      - testsuites
+      - manualtestcases
+      - testplans
+      - alertsources
+      - chatchannels
+      - knowledgebases
+      - maintenancewindows
+      - environments
+      - connectors
+      - argossettings
+      - workflows
+      - personas
+      - securitypolicies
+      - securityscans
+      - detectionrules
+      - healthnotebooks
+      - tenants
+      - costbudgets
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  # Status subresources
+  - apiGroups:
+      - argonix.io
+    resources:
+      - monitors/status
+      - synthetictests/status
+      - groups/status
+      - notificationrules/status
+      - alertchannels/status
+      - statuspages/status
+      - testsuites/status
+      - manualtestcases/status
+      - testplans/status
+      - alertsources/status
+      - chatchannels/status
+      - knowledgebases/status
+      - maintenancewindows/status
+      - environments/status
+      - connectors/status
+      - argossettings/status
+      - workflows/status
+      - personas/status
+      - securitypolicies/status
+      - securityscans/status
+      - detectionrules/status
+      - healthnotebooks/status
+      - tenants/status
+      - costbudgets/status
+    verbs:
+      - get
+      - patch
+      - update
+  # Finalizers
+  - apiGroups:
+      - argonix.io
+    resources:
+      - monitors/finalizers
+      - synthetictests/finalizers
+      - groups/finalizers
+      - notificationrules/finalizers
+      - alertchannels/finalizers
+      - statuspages/finalizers
+      - testsuites/finalizers
+      - manualtestcases/finalizers
+      - testplans/finalizers
+      - alertsources/finalizers
+      - chatchannels/finalizers
+      - knowledgebases/finalizers
+      - maintenancewindows/finalizers
+      - environments/finalizers
+      - connectors/finalizers
+      - argossettings/finalizers
+      - workflows/finalizers
+      - personas/finalizers
+      - securitypolicies/finalizers
+      - securityscans/finalizers
+      - detectionrules/finalizers
+      - healthnotebooks/finalizers
+      - tenants/finalizers
+      - costbudgets/finalizers
+    verbs:
+      - update
+  # Events
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+      - patch
+  # Leader election
+  - apiGroups:
+      - coordination.k8s.io
+    resources:
+      - leases
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "argonix-crd.fullname" . }}-manager
+  labels:
+    {{- include "argonix-crd.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "argonix-crd.fullname" . }}-manager
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "argonix-crd.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}

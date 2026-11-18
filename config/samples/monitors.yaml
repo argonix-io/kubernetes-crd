@@ -1,0 +1,44 @@
+apiVersion: argonix.io/v1alpha1
+kind: Monitor
+metadata:
+  name: example-http-monitor
+spec:
+  name: "My Website"
+  monitorType: http
+  url: "https://example.com"
+  checkInterval: 60
+  timeout: 10
+  tags:
+    - production
+    - website
+---
+apiVersion: argonix.io/v1alpha1
+kind: Monitor
+metadata:
+  name: example-ping-monitor
+spec:
+  name: "Database Server"
+  monitorType: ping
+  hostname: "db.example.com"
+  checkInterval: 120
+---
+apiVersion: argonix.io/v1alpha1
+kind: Monitor
+metadata:
+  name: example-tcp-monitor
+spec:
+  name: "Redis"
+  monitorType: tcp
+  hostname: "redis.example.com"
+  port: 6379
+  checkInterval: 60
+---
+apiVersion: argonix.io/v1alpha1
+kind: Monitor
+metadata:
+  name: example-ssl-monitor
+spec:
+  name: "SSL Certificate"
+  monitorType: ssl
+  url: "https://example.com"
+  sslExpiryWarnDays: 14

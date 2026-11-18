@@ -1,0 +1,17 @@
+apiVersion: argonix.io/v1alpha1
+kind: KnowledgeBase
+metadata:
+  name: example-runbooks
+spec:
+  name: "Runbooks"
+  sourceType: confluence
+  connectorId: "connector-uuid"
+  syncConfig: '{"space_key": "OPS", "sync_interval": "1h"}'
+---
+apiVersion: argonix.io/v1alpha1
+kind: KnowledgeBase
+metadata:
+  name: example-manual-kb
+spec:
+  name: "Internal Procedures"
+  sourceType: manual

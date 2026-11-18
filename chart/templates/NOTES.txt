@@ -1,0 +1,36 @@
+Thank you for installing {{ .Chart.Name }} v{{ .Chart.Version }}.
+
+The Argonix CRD controller is now running in namespace {{ .Release.Namespace }}.
+
+Available Custom Resources (argonix.io/v1alpha1):
+  - Monitor
+  - SyntheticTest
+  - Group
+  - AlertChannel
+  - NotificationRule
+  - StatusPage
+  - TestSuite
+  - ManualTestCase
+  - TestPlan
+
+Quick start:
+
+  # List all monitors
+  kubectl get monitors -n {{ .Release.Namespace }}
+
+  # Create a monitor
+  cat <<EOF | kubectl apply -f -
+  apiVersion: argonix.io/v1alpha1
+  kind: Monitor
+  metadata:
+    name: my-website
+    namespace: {{ .Release.Namespace }}
+  spec:
+    name: My Website
+    monitorType: http
+    url: https://example.com
+    checkInterval: 60
+  EOF
+
+  # Check controller logs
+  kubectl logs -l app.kubernetes.io/name={{ include "argonix-crd.name" . }} -n {{ .Release.Namespace }}

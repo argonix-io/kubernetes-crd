@@ -1,0 +1,330 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.15.0
+  name: monitors.argonix.io
+spec:
+  group: argonix.io
+  names:
+    kind: Monitor
+    listKind: MonitorList
+    plural: monitors
+    singular: monitor
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.monitorType
+      name: Type
+      type: string
+    - jsonPath: .status.currentStatus
+      name: Status
+      type: string
+    - jsonPath: .spec.isActive
+      name: Active
+      type: boolean
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Monitor is the Schema for the monitors API.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: MonitorSpec defines the desired state of a Monitor.
+            properties:
+              assertions:
+                default: '[]'
+                description: Assertions is a JSON-encoded array of response assertions.
+                type: string
+              autoInvestigate:
+                default: false
+                description: AutoInvestigate enables Argos AI auto-investigation when
+                  the monitor goes down.
+                type: boolean
+              autoRemediate:
+                default: false
+                description: AutoRemediate enables Argos AI auto-remediation after
+                  investigation.
+                type: boolean
+              checkInterval:
+                default: 300
+                description: CheckInterval is the number of seconds between checks.
+                format: int64
+                type: integer
+              dnsExpected:
+                description: DNSExpected is the expected DNS response.
+                type: string
+              dnsRecordType:
+                default: A
+                description: DNSRecordType is the DNS record type to query.
+                type: string
+              followRedirects:
+                default: true
+                description: FollowRedirects indicates whether to follow HTTP redirects.
+                type: boolean
+              groupId:
+                description: GroupID is the UUID of the group this monitor belongs
+                  to.
+                type: string
+              grpcMetadata:
+                default: '{}'
+                description: GRPCMetadata is a JSON-encoded map of gRPC metadata.
+                type: string
+              grpcMethod:
+                description: GRPCMethod is the gRPC method name.
+                type: string
+              grpcProto:
+                description: GRPCProto is the protobuf definition.
+                type: string
+              grpcService:
+                description: GRPCService is the gRPC service name.
+                type: string
+              grpcTLS:
+                default: true
+                description: GRPCTLS indicates whether to use TLS for gRPC.
+                type: boolean
+              heartbeatGraceSeconds:
+                default: 0
+                description: HeartbeatGraceSeconds is the grace period in seconds
+                  for heartbeat monitors.
+                format: int64
+                type: integer
+              hostname:
+                description: Hostname is the target hostname for ping/tcp/dns monitors.
+                type: string
+              httpAuthPass:
+                description: HTTPAuthPass is the HTTP Basic Auth password.
+                type: string
+              httpAuthUser:
+                description: HTTPAuthUser is the HTTP Basic Auth username.
+                type: string
+              httpBody:
+                description: HTTPBody is the request body.
+                type: string
+              httpBodyContentType:
+                default: application/json
+                description: HTTPBodyContentType is the Content-Type for the request
+                  body.
+                type: string
+              httpHeaders:
+                default: '{}'
+                description: HTTPHeaders is a JSON-encoded map of custom HTTP headers.
+                type: string
+              httpMethod:
+                default: GET
+                description: HTTPMethod is the HTTP method to use.
+                type: string
+              isActive:
+                default: true
+                description: IsActive indicates whether the monitor is enabled.
+                type: boolean
+              keyword:
+                description: Keyword is the keyword to search for in the response.
+                type: string
+              keywordExists:
+                default: true
+                description: KeywordExists - alert when keyword is missing (true)
+                  or found (false).
+                type: boolean
+              location:
+                default: eu-france
+                description: Location is the primary check location.
+                type: string
+              monitorType:
+                description: MonitorType is the type of monitor.
+                enum:
+                - http
+                - ping
+                - tcp
+                - dns
+                - ssl
+                - keyword
+                - grpc
+                - heartbeat
+                - multi_step_http
+                type: string
+              multiStepConfig:
+                default: '[]'
+                description: MultiStepConfig is a JSON-encoded array of multi-step
+                  HTTP configurations.
+                type: string
+              name:
+                description: Name is the display name of the monitor.
+                type: string
+              port:
+                description: Port is the target port for tcp monitors.
+                format: int64
+                type: integer
+              regions:
+                description: Regions is a list of region codes for multi-region checks.
+                items:
+                  type: string
+                type: array
+              remediationEnabled:
+                default: false
+                description: RemediationEnabled indicates whether auto-remediation
+                  is enabled.
+                type: boolean
+              remediationScript:
+                description: RemediationScript is the shell script to run for remediation.
+                type: string
+              remediationTimeout:
+                default: 60
+                description: RemediationTimeout is the script timeout in seconds.
+                format: int64
+                type: integer
+              remediationWaitSeconds:
+                default: 30
+                description: RemediationWaitSeconds is the wait time after remediation
+                  in seconds.
+                format: int64
+                type: integer
+              retries:
+                default: 0
+                description: Retries is the number of retries before marking the monitor
+                  as down.
+                format: int64
+                type: integer
+              sslExpiryWarnDays:
+                default: 30
+                description: SSLExpiryWarnDays is the number of days before SSL expiry
+                  to warn.
+                format: int64
+                type: integer
+              tags:
+                description: Tags is a list of tags.
+                items:
+                  type: string
+                type: array
+              timeout:
+                default: 30
+                description: Timeout is the request timeout in seconds.
+                format: int64
+                type: integer
+              url:
+                description: URL is the target URL for http/keyword/ssl monitors.
+                type: string
+              verifySSL:
+                default: true
+                description: VerifySSL indicates whether to verify SSL certificates.
+                type: boolean
+            required:
+            - monitorType
+            - name
+            type: object
+          status:
+            description: MonitorStatus defines the observed state of a Monitor.
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the resource's state.
+                items:
+                  description: "Condition contains details for one aspect of the current
+                    state of this API Resource.\n---\nThis struct is intended for
+                    direct use as an array at the field path .status.conditions.  For
+                    example,\n\n\n\ttype FooStatus struct{\n\t    // Represents the
+                    observations of a foo's current state.\n\t    // Known .status.conditions.type
+                    are: \"Available\", \"Progressing\", and \"Degraded\"\n\t    //
+                    +patchMergeKey=type\n\t    // +patchStrategy=merge\n\t    // +listType=map\n\t
+                    \   // +listMapKey=type\n\t    Conditions []metav1.Condition `json:\"conditions,omitempty\"
+                    patchStrategy:\"merge\" patchMergeKey:\"type\" protobuf:\"bytes,1,rep,name=conditions\"`\n\n\n\t
+                    \   // other fields\n\t}"
+                  properties:
+                    lastTransitionTime:
+                      description: |-
+                        lastTransitionTime is the last time the condition transitioned from one status to another.
+                        This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
+                      format: date-time
+                      type: string
+                    message:
+                      description: |-
+                        message is a human readable message indicating details about the transition.
+                        This may be an empty string.
+                      maxLength: 32768
+                      type: string
+                    observedGeneration:
+                      description: |-
+                        observedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      minimum: 0
+                      type: integer
+                    reason:
+                      description: |-
+                        reason contains a programmatic identifier indicating the reason for the condition's last transition.
+                        Producers of specific condition types may define expected values and meanings for this field,
+                        and whether the values are considered a guaranteed API.
+                        The value should be a CamelCase string.
+                        This field may not be empty.
+                      maxLength: 1024
+                      minLength: 1
+                      pattern: ^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$
+                      type: string
+                    status:
+                      description: status of the condition, one of True, False, Unknown.
+                      enum:
+                      - "True"
+                      - "False"
+                      - Unknown
+                      type: string
+                    type:
+                      description: |-
+                        type of condition in CamelCase or in foo.example.com/CamelCase.
+                        ---
+                        Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be
+                        useful (see .node.status.conditions), the ability to deconflict is important.
+                        The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)
+                      maxLength: 316
+                      pattern: ^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - message
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+              currentStatus:
+                description: CurrentStatus is the current status (up, down, degraded,
+                  maintenance, unknown).
+                type: string
+              dateCreated:
+                description: DateCreated is the creation timestamp.
+                type: string
+              dateModified:
+                description: DateModified is the last modification timestamp.
+                type: string
+              heartbeatToken:
+                description: HeartbeatToken is the auto-generated heartbeat token.
+                type: string
+              id:
+                description: ID is the UUID of the monitor in the Argonix API.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

@@ -1,0 +1,13 @@
+apiVersion: argonix.io/v1alpha1
+kind: CostBudget
+metadata:
+  name: monthly-cloud-budget
+spec:
+  name: "Monthly Cloud Budget"
+  period: monthly
+  amount: "5000.00"
+  currency: EUR
+  isActive: true
+  alertThresholdsPct: "[80, 100, 120]"
+  # filters: '{"provider": "aws"}'        # empty = whole org
+  # alertChannelIds: '["<alert-channel-uuid>"]'

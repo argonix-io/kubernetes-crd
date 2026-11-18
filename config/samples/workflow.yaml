@@ -1,0 +1,37 @@
+apiVersion: argonix.io/v1alpha1
+kind: Workflow
+metadata:
+  name: example-restart-pod
+spec:
+  name: "Restart Failing Pod"
+  slug: restart-failing-pod
+  category: devops
+  steps: '[{"action": "identify_pod", "connector_type": "kubernetes"}, {"action": "restart_pod", "connector_type": "kubernetes"}, {"action": "notify", "connector_type": "slack"}]'
+  requiredConnectorTypes: '["kubernetes", "slack"]'
+  requiresConfirmation: true
+---
+apiVersion: argonix.io/v1alpha1
+kind: Workflow
+metadata:
+  name: example-daily-report
+spec:
+  name: "Daily Status Report"
+  slug: daily-status-report
+  category: general
+  schedule: "0 9 * * *"
+  requiresConfirmation: false
+---
+apiVersion: argonix.io/v1alpha1
+kind: Workflow
+metadata:
+  name: example-restart-pod-documented
+spec:
+  name: "Restart Pod (documented inputs)"
+  slug: restart-pod-documented
+  category: devops
+  # Steps reference {{input.x}}; the input SET is derived from these references.
+  steps: '[{"id": "restart", "tool": "k8s.delete_pod", "params": {"namespace": "{{input.namespace}}", "name": "{{input.pod_name}}"}, "on_error": "abort"}]'
+  # inputHints only annotates the derived inputs (never defines them).
+  inputHints: '{"namespace": {"description": "Kubernetes namespace of the pod", "example": "prod"}, "pod_name": {"description": "Name of the pod to restart", "example": "api-gateway-7d9f"}}'
+  requiredConnectorTypes: '["kubernetes"]'
+  requiresConfirmation: true
